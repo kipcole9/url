@@ -1,9 +1,8 @@
-# Getting Started with Cldr
-![Build Status](http://sweatbox.noexpectations.com.au:8080/buildStatus/icon?job=url)
+# Getting Started with URL
 [![Hex pm](http://img.shields.io/hexpm/v/url.svg?style=flat)](https://hex.pm/packages/url)
 [![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://github.com/kipcole9/url/blob/master/LICENSE)
 
-## Getting Started
+## Overview
 
 URL is a library modelled on the Elixir URI module so it parses and formats URL's with the additional function that is parses the scheme-specific payload of known URI schemes.  At present it can parse:
 
@@ -50,4 +49,12 @@ iex> URL.parse "tel:+61-0407-555-987"
   userinfo: nil
 }
 ```
+
+## Optional Configuration
+
+If configured in `mix.exs`, URL will use the following libraries:
+
+* [ex_phone_number](https://hex.pm/packages/ex_phone_number) will be used to parse and format telephone numbers defined in the `tel` URI scheme
+
+* [ex_cldr](https://hex.pm/packages/ex_cldr) and [gettext](https://hex.pm/packages/gettext) will be used to determine the current locale and therefore the current territory (country) for parsing and formatting telephone numbers that don't have a country code supplied.
 

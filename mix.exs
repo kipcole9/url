@@ -9,7 +9,7 @@ defmodule Url.MixProject do
       version: @version,
       elixir: "~> 1.5",
       name: "URL",
-      source_url: "https://github.com/kipcole9/cldr",
+      source_url: "https://github.com/kipcole9/url",
       docs: docs(),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -45,6 +45,7 @@ defmodule Url.MixProject do
     [
       {:nimble_parsec, "~> 0.4"},
       {:jason, "~> 1.0"},
+      {:ex_doc, "~> 0.18", only: [:dev, :doc]},
       {:ex_phone_number, "~> 0.1", optional: true},
       {:ex_cldr, "~> 1.7", optional: true},
       {:gettext, "~> 0.13", optional: true}
@@ -79,7 +80,6 @@ defmodule Url.MixProject do
     [
       source_ref: "v#{@version}",
       main: "readme",
-      logo: "logo.png",
       extras: [
         "README.md",
         "LICENSE.md",
