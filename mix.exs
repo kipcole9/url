@@ -5,7 +5,7 @@ defmodule Url.MixProject do
 
   def project do
     [
-      app: :url,
+      app: :ex_url,
       version: @version,
       elixir: "~> 1.5",
       name: "URL",
