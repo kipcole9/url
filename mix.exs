@@ -1,14 +1,38 @@
 defmodule Url.MixProject do
   use Mix.Project
 
+  @version "0.1.0"
+
   def project do
     [
       app: :url,
-      version: "0.1.0",
-      elixir: "~> 1.7",
+      version: @version,
+      elixir: "~> 1.5",
+      name: "URL",
+      source_url: "https://github.com/kipcole9/cldr",
+      docs: docs(),
+      build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      description: description(),
+      package: package(),
+      test_coverage: [tool: ExCoveralls],
+      aliases: aliases(),
+      elixirc_paths: elixirc_paths(Mix.env()),
+      dialyzer: [
+        ignore_warnings: ".dialyzer_ignore_warnings",
+        plt_add_apps: ~w(gettext inets jason mix poison plug)a
+      ],
+      compilers: Mix.compilers()
     ]
+  end
+
+  defp description do
+    """
+    Utilities to parse URLs incuding parsing scheme-specific
+    URLs including `tel`, `data` and `geo`.  Modelled on the
+    URI module.
+    """
   end
 
   def application do
@@ -19,8 +43,56 @@ defmodule Url.MixProject do
 
   defp deps do
     [
-      {:ex_phone_number, "~> 0.1"},
-      {:nimble_parsec, "~> 0.4"}
+      {:nimble_parsec, "~> 0.4"},
+      {:jason, "~> 1.0"},
+      {:ex_phone_number, "~> 0.1", optional: true},
+      {:ex_cldr, "~> 1.7", optional: true},
+      {:gettext, "~> 0.13", optional: true}
     ]
   end
+
+  defp package do
+    [
+      maintainers: ["Kip Cole"],
+      licenses: ["Apache 2.0"],
+      links: links(),
+      files: [
+        "lib",
+        "config",
+        "mix.exs",
+        "README*",
+        "CHANGELOG*",
+        "LICENSE*",
+      ]
+    ]
+  end
+
+  def links do
+    %{
+      "GitHub" => "https://github.com/kipcole9/url",
+      "Readme" => "https://github.com/kipcole9/url/blob/v#{@version}/README.md",
+      "Changelog" => "https://github.com/kipcole9/url/blob/v#{@version}/CHANGELOG.md"
+    }
+  end
+
+  def docs do
+    [
+      source_ref: "v#{@version}",
+      main: "readme",
+      logo: "logo.png",
+      extras: [
+        "README.md",
+        "LICENSE.md",
+        "CHANGELOG.md"
+      ],
+    ]
+  end
+
+  def aliases do
+    []
+  end
+
+  defp elixirc_paths(:test), do: ["lib", "mix", "test"]
+  defp elixirc_paths(:dev), do: ["lib", "mix", "bench"]
+  defp elixirc_paths(_), do: ["lib"]
 end

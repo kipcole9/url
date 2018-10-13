@@ -18,6 +18,11 @@ defmodule URL.ParseHelpers.Core do
     |> label("a colon")
   end
 
+  def plus do
+    ascii_char([?+])
+    |> label("a plus sign")
+  end
+
   def semicolon do
     ascii_char([?;])
     |> label("a semicolon")
@@ -172,7 +177,7 @@ defmodule URL.ParseHelpers.Core do
   end
 
   def base64_encoding(_rest, _args, context, _, _) do
-    {[:base64, :encoding], context}
+    {["base64", "encoding"], context}
   end
 
   def number do
@@ -245,6 +250,15 @@ defmodule URL.ParseHelpers.Core do
   def token do
     ascii_string(@token, min: 1)
     |> traverse(:unpercent)
+  end
+
+  @tel_digits [?-, ?., ?(, ?), ?0..?9]
+  def tel do
+    optional(ascii_string([?+], min: 1))
+    |> ascii_string(@tel_digits, min: 1)
+    |> reduce({Enum, :join, []})
+    |> unwrap_and_tag(:tel)
+    |> label("A telephone number")
   end
 
   def unpercent(_rest, [arg], context, _, _) do

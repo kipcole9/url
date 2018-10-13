@@ -5,10 +5,10 @@ defmodule URL.Data do
   @default_mediatype "text/plain"
   defstruct mediatype: @default_mediatype, params: %{}, data: ""
 
-  #   dataurl    := "data:" [ mediatype ] [ ";base64" ] "," data
-  #   mediatype  := [ type "/" subtype ] *( ";" parameter )
-  #   data       := *urlchar
-  #   parameter  := attribute "=" value
+  @type t() :: %__MODULE__{
+    mediatype: binary(),
+    params: Map.t()
+  }
 
   def parse(%URI{scheme: "data", path: path} = _uri) do
     with {:ok, data} <- unwrap(parse_data(path)) do
@@ -17,11 +17,13 @@ defmodule URL.Data do
     end
   end
 
-  def decode_data(%__MODULE__{params: %{encoding: :base64}} = data) do
-    Map.put(data, :data, Base.decode64(data.data))
+  defp decode_data(%__MODULE__{params: %{"encoding" => "base64"}} = data) do
+    case Base.decode64(data.data) do
+      {:ok, decoded} -> Map.put(data, :data, decoded)
+    end
   end
 
-  def decode_data(%__MODULE__{} = data) do
+  defp decode_data(%__MODULE__{} = data) do
     Map.put(data, :data, URI.decode(data.data))
   end
 

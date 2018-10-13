@@ -3,6 +3,13 @@ defmodule URL.Geo do
   import URL.ParseHelpers.{Core, Params, Unwrap}
   alias URL.ParseHelpers.Params
 
+  @type t() :: %__MODULE__{
+    lat: number(),
+    lng: number(),
+    alt: nil | number(),
+    params: Map.t()
+  }
+
   defstruct lat: 0.0, lng: 0.0, alt: nil, params: %{}
 
   @param_map %{
