@@ -1,5 +1,5 @@
 # Getting Started
-[![Hex pm](http://img.shields.io/hexpm/v/url.svg?style=flat)](https://hex.pm/packages/ex_url)
+[![Hex pm](http://img.shields.io/hexpm/v/ex_url.svg?style=flat)](https://hex.pm/packages/ex_url)
 [![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://github.com/kipcole9/url/blob/master/LICENSE)
 
 ## Overview
