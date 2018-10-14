@@ -79,13 +79,13 @@ defmodule UrlTest do
   end
 
   test "parsing an http url" do
-    assert URL.parse("http://thing.com") ==
+    assert URL.parse("http://thing.com/my_path") ==
       %URL{
         authority: "thing.com",
         fragment: nil,
         host: "thing.com",
         parsed_path: nil,
-        path: nil,
+        path: "/my_path",
         port: 80,
         query: nil,
         scheme: "http",
