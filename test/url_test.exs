@@ -1,6 +1,9 @@
 defmodule UrlTest do
   use ExUnit.Case
   doctest URL
+  doctest URL.Data
+  doctest URL.Tel
+  doctest URL.Geo
 
   test "parsing a tel url" do
     assert URL.parse("tel:+610407555987") ==
@@ -38,17 +41,16 @@ defmodule UrlTest do
   end
 
   test "parsing a data url" do
-    base64 = "MIICajCCAdOgAwIBA" <>
-          "gICBEUwDQYJKoZIhvcNAQEEBQAwdzELMAkGA1UEBhMCVVMxLDAqBgNVBAoTI05l"
+    base64 = "SGVsbG8gV29ybGQh"
     url = "data:application/pgp-keys;base64," <> base64
     p = URL.parse(url).parsed_path
 
     assert p.mediatype == "application/pgp-keys"
     assert {:ok, p.data} == Base.decode64(base64)
   end
-  
+
   test "parsing an http url" do
-    assert URL.parse("http://thing.com") ==                          
+    assert URL.parse("http://thing.com") ==
       %URL{
         authority: "thing.com",
         fragment: nil,

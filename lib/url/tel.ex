@@ -11,6 +11,16 @@ defmodule URL.Tel do
 
   @default_territory "US"
 
+  @doc """
+  Parse a URI with the `:scheme` of "tel"
+
+  ## Example
+
+      iex> tel = URI.parse "tel:+61-0407-555-987"
+      iex> URL.Tel.parse(tel)
+      %URL.Tel{params: %{}, tel: "+61 407 555 987"}
+
+  """
   @spec parse(URI.t()) :: __MODULE__.t() | {:error, {module(), binary()}}
   def parse(%URI{scheme: "tel", path: path}) do
     with {:ok, tel} <- unwrap(parse_tel(path)) do

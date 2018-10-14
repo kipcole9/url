@@ -1,4 +1,7 @@
 defmodule URL.Data do
+  @moduledoc """
+  Parses a `data` URL
+  """
   import NimbleParsec
   import URL.ParseHelpers.{Core, Params, Unwrap}
 
@@ -10,6 +13,20 @@ defmodule URL.Data do
     params: Map.t()
   }
 
+  @doc """
+  Parse a URI with the `:scheme` of "data"
+
+  ## Example
+
+      iex> data = URI.parse "data:text/plain;base64,SGVsbG8gV29ybGQh"
+      iex> URL.Data.parse(data)
+      %URL.Data{
+        data: "Hello World!",
+        mediatype: "text/plain",
+        params: %{"encoding" => "base64"}
+      }
+  
+  """
   @spec parse(URI.t()) :: __MODULE__.t() | {:error, {module(), binary()}}
   def parse(%URI{scheme: "data", path: path}) do
     with {:ok, data} <- unwrap(parse_data(path)) do
@@ -18,9 +35,9 @@ defmodule URL.Data do
     end
   end
 
-  defp decode_data(%__MODULE__{params: %{"encoding" => "base64"}} = data) do
-    case Base.decode64(data.data) do
-      {:ok, decoded} -> Map.put(data, :data, decoded)
+  defp decode_data(%__MODULE__{params: %{"encoding" => "base64"}, data: data} = url) do
+    case Base.decode64(data) do
+      {:ok, decoded} -> Map.put(url, :data, decoded)
     end
   end
 
