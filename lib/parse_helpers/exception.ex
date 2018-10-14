@@ -1,6 +1,6 @@
 defmodule URL.Parser.ParseError do
   @moduledoc """
-  Exception raised when an a URL cannot be parsed
+  Exception raised when a URL cannot be parsed
   """
   defexception [:message]
 
