@@ -40,13 +40,42 @@ defmodule UrlTest do
       }
   end
 
-  test "parsing a data url" do
-    base64 = "SGVsbG8gV29ybGQh"
-    url = "data:application/pgp-keys;base64," <> base64
-    p = URL.parse(url).parsed_path
+  test "parsing a data url that is base64 encoded" do
+    assert URL.parse("data:text/plain;base64,SGVsbG8gV29ybGQh") ==
+      %URL{
+        authority: nil,
+        fragment: nil,
+        host: nil,
+        parsed_path: %URL.Data{
+          data: "Hello World!",
+          mediatype: "text/plain",
+          params: %{"encoding" => "base64"}
+        },
+        path: "text/plain;base64,SGVsbG8gV29ybGQh",
+        port: nil,
+        query: nil,
+        scheme: "data",
+        userinfo: nil
+      }
+  end
 
-    assert p.mediatype == "application/pgp-keys"
-    assert {:ok, p.data} == Base.decode64(base64)
+  test "parsing a data url that is not base64 encoded" do
+    assert URL.parse("data:,Hello%20World%21") ==
+      %URL{
+        authority: nil,
+        fragment: nil,
+        host: nil,
+        parsed_path: %URL.Data{
+          data: "Hello World!",
+          mediatype: "text/plain",
+          params: %{}
+        },
+        path: ",Hello%20World%21",
+        port: nil,
+        query: nil,
+        scheme: "data",
+        userinfo: nil
+      }
   end
 
   test "parsing an http url" do
@@ -63,4 +92,5 @@ defmodule UrlTest do
         userinfo: nil
       }
   end
+
 end

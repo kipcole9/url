@@ -44,7 +44,7 @@ iex> URL.parse("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
 ```
 ### Parse a `tel` URL:
 ```elixir
-iex> URL.parse "tel:+61-0407-555-987"
+iex> URL.parse("tel:+61-0407-555-987")
 %URL{
   authority: nil,
   fragment: nil,
@@ -58,8 +58,9 @@ iex> URL.parse "tel:+61-0407-555-987"
 }
 ```
 ### Parse a `data` URL:
+This first example shows the treatment of data that is `base64` encoded.  It is decoded by `URL.Data.parse/1`.
 ```elixir
-iex> data = URL.parse("data:;base64,SGVsbG8gV29ybGQh")
+iex> URL.parse("data:;base64,SGVsbG8gV29ybGQh")
 %URL{
   authority: nil,
   fragment: nil,
@@ -70,6 +71,25 @@ iex> data = URL.parse("data:;base64,SGVsbG8gV29ybGQh")
     params: %{"encoding" => "base64"}
   },
   path: ";base64,SGVsbG8gV29ybGQh",
+  port: nil,
+  query: nil,
+  scheme: "data",
+  userinfo: nil
+}
+```
+This second example shows the treatement of data that is not marked as `base64` encoded.  In this case it is considered to be `percent-encoded`.  It is also decoded during parsing.
+```elixir
+iex> URL.parse("data:,Hello%20World%21")
+%URL{
+  authority: nil,
+  fragment: nil,
+  host: nil,
+  parsed_path: %URL.Data{
+    data: "Hello World!",
+    mediatype: "text/plain",
+    params: %{}
+  },
+  path: ",Hello%20World%21",
   port: nil,
   query: nil,
   scheme: "data",
