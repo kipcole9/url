@@ -20,6 +20,10 @@ defmodule URL.Tel do
       iex> URL.Tel.parse(tel)
       %URL.Tel{params: %{}, tel: "+61 407 555 987"}
 
+      iex> tel = URI.parse "tel:0407-555-987;phone-context=+61"
+      iex> URL.Tel.parse(tel)
+      %URL.Tel{params: %{"phone-context" => "+61"}, tel: "+61 407 555 987"}
+
   """
   @spec parse(URI.t()) :: __MODULE__.t() | {:error, {module(), binary()}}
   def parse(%URI{scheme: "tel", path: path}) do
@@ -28,6 +32,7 @@ defmodule URL.Tel do
       Map.put(tel, :tel, format(tel))
     end
   end
+
 
   if Code.ensure_loaded?(ExPhoneNumber) do
     defp parse_phone_number(number, territory \\ get_territory()) do
@@ -39,11 +44,24 @@ defmodule URL.Tel do
       ExPhoneNumber.Metadata.get_country_code_for_region_code(territory) == 0
     end
 
-    defp format(%__MODULE__{tel: tel}, format \\ :international) do
-      case parse_phone_number(tel) do
+    defp format(%__MODULE__{tel: tel} = url, format \\ :international) do
+      phone_context = phone_context(url.params)
+      case parse_phone_number(phone_context <> tel) do
         {:ok, tel} -> ExPhoneNumber.format(tel, format)
         other -> other
       end
+    end
+
+    defp phone_context(%{"phone-context" => phone_context}) do
+      with {:ok, parsed_phone_context} <- unwrap(parse_tel(phone_context)) do
+        Keyword.get(parsed_phone_context, :tel)
+      else
+        _ -> ""
+      end
+    end
+
+    defp phone_context(_url) do
+      ""
     end
   else
     defp parse_phone_number(number, territory \\ nil) do
@@ -52,6 +70,10 @@ defmodule URL.Tel do
 
     defp format(%__MODULE__{tel: tel}, format \\ :international) do
       tel
+    end
+
+    defp phone_context(_) do
+      ""
     end
   end
 

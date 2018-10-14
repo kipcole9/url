@@ -1,3 +1,11 @@
+# Changelog for URL v0.2.1
+
+This is the changelog for URL version 0.2.1 released on ______, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+
+### Bug Fixes
+
+* Now correctly uses the `phone-context` parameter when formatting a telelphone number in a `tel` URL.
+
 # Changelog for URL v0.2.0
 
 This is the changelog for URL version 0.2.0 released on October 13th, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)

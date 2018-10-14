@@ -56,6 +56,23 @@ iex> URL.parse("tel:+61-0407-555-987")
   scheme: "tel",
   userinfo: nil
 }
+
+# When the parameter "phone-context" is also a valid number then it is prepended before formatting
+iex> tel = URL.parse "tel:0407-555-987;phone-context=+61"
+%URL{
+  authority: nil,
+  fragment: nil,
+  host: nil,
+  parsed_path: %URL.Tel{
+    params: %{"phone-context" => "+61"},
+    tel: "+61 407 555 987"
+  },
+  path: "0407-555-987;phone-context=+61",
+  port: nil,
+  query: nil,
+  scheme: "tel",
+  userinfo: nil
+}
 ```
 ### Parse a `data` URL:
 This first example shows the treatment of data that is `base64` encoded.  It is decoded by `URL.Data.parse/1`.
