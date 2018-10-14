@@ -16,7 +16,8 @@ defmodule URL.Geo do
     "u" => &Params.numberize/1
   }
 
-  def parse(%URI{scheme: "geo", path: path} = _uri) do
+  @spec parse(URI.t()) :: __MODULE__.t() | {:error, {module(), binary()}}
+  def parse(%URI{scheme: "geo", path: path}) do
     with {:ok, geo} <- unwrap(parse_geo(path)) do
       geo
       |> normalize_params(@param_map)
@@ -24,7 +25,7 @@ defmodule URL.Geo do
     end
   end
 
-  defparsec :parse_geo,
+  defparsecp :parse_geo,
     number() |> unwrap_and_tag(:lat)
     |> ignore(comma())
     |> concat(number() |> unwrap_and_tag(:lng))

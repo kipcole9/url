@@ -10,7 +10,8 @@ defmodule URL.Data do
     params: Map.t()
   }
 
-  def parse(%URI{scheme: "data", path: path} = _uri) do
+  @spec parse(URI.t()) :: __MODULE__.t() | {:error, {module(), binary()}}
+  def parse(%URI{scheme: "data", path: path}) do
     with {:ok, data} <- unwrap(parse_data(path)) do
       struct(__MODULE__, data)
       |> decode_data
@@ -27,7 +28,7 @@ defmodule URL.Data do
     Map.put(data, :data, URI.decode(data.data))
   end
 
-  defparsec :parse_data,
+  defparsecp :parse_data,
       optional(mediatype())
       |> concat(params())
       |> ignore(comma())

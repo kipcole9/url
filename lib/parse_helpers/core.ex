@@ -1,4 +1,6 @@
 defmodule URL.ParseHelpers.Core do
+  @moduledoc false
+
   import NimbleParsec
 
   @cr 0x0d

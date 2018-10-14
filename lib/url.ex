@@ -64,27 +64,28 @@ defmodule URL do
     }
 
   """
+  @spec parse(url :: binary()) :: __MODULE__.t()
   def parse(url) when is_binary(url) do
     url
     |> parse_scheme
     |> merge_uri
   end
 
-  defdelegate to_string(uri), to: URI
+  defdelegate to_string(url), to: URI
 
-  def parse_scheme(url) when is_binary(url) do
+  defp parse_scheme(url) when is_binary(url) do
     url
     |> URI.parse
     |> parse_scheme
   end
 
   for {scheme, module} <- @supported_schemes do
-    def parse_scheme(%URI{scheme: unquote(scheme)} = uri) do
+    defp parse_scheme(%URI{scheme: unquote(scheme)} = uri) do
       {uri, unquote(module).parse(uri)}
     end
   end
 
-  def parse_scheme(%URI{} = uri) do
+  defp parse_scheme(%URI{} = uri) do
     {uri, nil}
   end
 
@@ -94,10 +95,6 @@ defmodule URL do
     |> structify(__MODULE__)
     |> add_parsed_path(parsed_path)
   end
-
-  # defp add_parsed_path(url, {:error, _}) do
-  #   Map.put(url, :parsed_path, :error)
-  # end
 
   defp add_parsed_path(url, parsed_path) do
     Map.put(url, :parsed_path, parsed_path)

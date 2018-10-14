@@ -11,7 +11,8 @@ defmodule URL.Tel do
 
   @default_territory "US"
 
-  def parse(%URI{scheme: "tel", path: path} = _uri) do
+  @spec parse(URI.t()) :: __MODULE__.t() | {:error, {module(), binary()}}
+  def parse(%URI{scheme: "tel", path: path}) do
     with {:ok, tel} <- unwrap(parse_tel(path)) do
       tel = struct(__MODULE__, tel)
       Map.put(tel, :tel, format(tel))
@@ -71,6 +72,6 @@ defmodule URL.Tel do
     end
   end
 
-  defparsec :parse_tel,
+  defparsecp :parse_tel,
     tel() |> concat(params())
 end
