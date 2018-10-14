@@ -22,7 +22,7 @@ given that [WHATWG](https://en.wikipedia.org/wiki/WHATWG) prefers URL over URI:
 
 ## Examples
 
-Parse a geo URL:
+### Parse a `geo` URL:
 ```elixir
 iex> URL.parse("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
 %URL{
@@ -42,7 +42,7 @@ iex> URL.parse("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
   userinfo: nil
 }
 ```
-Parse a `tel` URL:
+### Parse a `tel` URL:
 ```elixir
 iex> URL.parse "tel:+61-0407-555-987"
 %URL{
@@ -57,6 +57,25 @@ iex> URL.parse "tel:+61-0407-555-987"
   userinfo: nil
 }
 ```
+### Parse a `data` URL:
+```elixir
+iex> data = URL.parse("data:;base64,SGVsbG8gV29ybGQh")
+%URL{
+  authority: nil,
+  fragment: nil,
+  host: nil,
+  parsed_path: %URL.Data{
+    data: "Hello World!",
+    mediatype: "text/plain",
+    params: %{"encoding" => "base64"}
+  },
+  path: ";base64,SGVsbG8gV29ybGQh",
+  port: nil,
+  query: nil,
+  scheme: "data",
+  userinfo: nil
+}
+```
 
 ## Configuration
 
@@ -64,7 +83,7 @@ Configure `ex_url` in `mix.exs`:
 ```elixir
   defp deps do
     [
-      {ex_url, "~> 0.1"},
+      {ex_url, "~> 0.2"},
       ...
     ]
   end
@@ -80,7 +99,7 @@ Option configuration in `mix.exs`:
 ```elixir
   defp deps do
     [
-      {ex_url, "~> 0.1"},
+      {ex_url, "~> 0.2"},
       {:ex_phone_number, "~> 0.1"},
       {:ex_cldr, "~> 1.7"},
       {:gettext, "~> 0.13"}
