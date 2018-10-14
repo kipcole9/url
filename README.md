@@ -12,6 +12,14 @@
 
 The basic API is `URL.parse/1`.  The function `URL.format/1` is delegated to the URI module.
 
+Of course these are really URI's, not URL's but its a reasonable choice of name
+given that [WHATWG](https://en.wikipedia.org/wiki/WHATWG) prefers URL over URI:
+
+> Standardize on the term URL. URI and IRI [Internationalized Resource Identifier]
+> are just confusing. In practice a single algorithm is used for both so keeping
+> them distinct is not helping anyone. URL also easily wins the search result
+> popularity contest
+
 ## Examples
 
 Parse a geo URL:

@@ -7,14 +7,6 @@ defmodule URL do
   as [geo](https://tools.ietf.org/rfc/rfc5870), [data](https://tools.ietf.org/html/rfc2397)
   and [tel](https://tools.ietf.org/html/rfc3966).
 
-  Of course these are really URI's, not URL's but its a reasonable choice of name
-  given that [WHATWG](https://en.wikipedia.org/wiki/WHATWG) prefers URL over URI:
-
-  > Standardize on the term URL. URI and IRI [Internationalized Resource Identifier]
-  > are just confusing. In practice a single algorithm is used for both so keeping
-  > them distinct is not helping anyone. URL also easily wins the search result
-  > popularity contest
-
   """
   defstruct scheme: nil,
     path: nil,
