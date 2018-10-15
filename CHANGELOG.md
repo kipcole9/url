@@ -1,6 +1,10 @@
-# Changelog for URL v0.2.1
+# Changelog for URL v0.3.0
 
-This is the changelog for URL version 0.2.1 released on ______, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+This is the changelog for URL version 0.3.0 released on October 16, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+
+### Enhancements
+
+* Now supports the `mailto` URL type.  See `URL.Mailto`
 
 ### Bug Fixes
 

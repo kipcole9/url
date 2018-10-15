@@ -40,6 +40,21 @@ defmodule URL.ParseHelpers.Core do
     |> label("a comma")
   end
 
+  def at_symbol do
+    ascii_char([?@])
+    |> label("an at symbol")
+  end
+
+  def question_mark do
+    ascii_char([??])
+    |> label("a question mark")
+  end
+
+  def ampersand do
+    ascii_char([?&])
+    |> label("an ampersand")
+  end
+
   def digit do
     ascii_char([?0..?9])
     |> label("a decimal digit")
@@ -98,6 +113,15 @@ defmodule URL.ParseHelpers.Core do
   def url_string do
     choice([
       reserved(),
+      unreserved(),
+      escaped()
+    ])
+    |> repeat
+    |> reduce({Enum, :join, []})
+  end
+
+  def param_string do
+    choice([
       unreserved(),
       escaped()
     ])

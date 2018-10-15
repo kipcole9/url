@@ -33,7 +33,8 @@ defmodule URL do
   @supported_schemes %{
     "tel" => URL.Tel,
     "data" => URL.Data,
-    "geo" =>  URL.Geo
+    "geo" =>  URL.Geo,
+    "mailto" => URL.Mailto
   }
 
   import URL.ParseHelpers.Core, only: [structify: 2]

@@ -8,6 +8,7 @@
 
 * [geo](https://tools.ietf.org/rfc/rfc5870)
 * [data](https://tools.ietf.org/html/rfc2397)
+* [mailto](https://tools.ietf.org/html/rfc6068)
 * and [tel](https://tools.ietf.org/html/rfc3966)
 
 The basic API is `URL.parse/1`.  The function `URL.format/1` is delegated to the URI module.
@@ -113,7 +114,24 @@ iex> URL.parse("data:,Hello%20World%21")
   userinfo: nil
 }
 ```
-
+### Parse a `mailto` URL
+```elixir
+iex> URL.parse "mailto:infobot@example.com?subject=current-issue"
+%URL{
+  authority: nil,
+  fragment: nil,
+  host: nil,
+  parsed_path: %URL.Mailto{
+    params: %{"subject" => "current-issue"},
+    to: ["infobot@example.com"]
+  },
+  path: "infobot@example.com",
+  port: nil,
+  query: "subject=current-issue",
+  scheme: "mailto",
+  userinfo: nil
+}
+```
 ## Configuration
 
 Configure `ex_url` in `mix.exs`:
