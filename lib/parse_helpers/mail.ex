@@ -26,8 +26,16 @@ defmodule URL.ParseHelpers.Mailto do
     |> traverse(:join_address)
   end
 
-  def join_address(_rest, [local_part, ?@, domain], context, _, _) do
-    {[domain <> "@" <> local_part], context}
+  def join_address(_rest, parts, context, _, _) do
+    domain =
+      parts
+      |> Enum.map(fn
+        x when is_integer(x) -> List.to_string([x])
+        x -> x
+      end)
+      |> Enum.reverse
+      |> Enum.join
+    {[domain], context}
   end
 
   def local_part do
@@ -40,7 +48,7 @@ defmodule URL.ParseHelpers.Mailto do
   def domain do
     choice([
       quoted_string(),
-      token()
+      dot_atom_text()
     ])
   end
 
@@ -67,4 +75,42 @@ defmodule URL.ParseHelpers.Mailto do
     |> traverse(:unpercent)
   end
 
+  # From RFC5322
+  # atext           =   ALPHA / DIGIT /    ; Printable US-ASCII
+  #                     "!" / "#" /        ;  characters not including
+  #                     "$" / "%" /        ;  specials.  Used for atoms.
+  #                     "&" / "'" /
+  #                     "*" / "+" /
+  #                     "-" / "/" /
+  #                     "=" / "?" /
+  #                     "^" / "_" /
+  #                     "`" / "{" /
+  #                     "|" / "}" /
+  #                     "~"
+  #
+  # atom            =   [CFWS] 1*atext [CFWS]
+  #
+  # dot-atom-text   =   1*atext *("." 1*atext)
+  #
+  # dot-atom        =   [CFWS] dot-atom-text [CFWS]
+
+  def atext do
+    ascii_string([?0..?9, ?a..?z, ?A..?Z, ?!, ?#, ?$,
+            ?%, ?&, ?', ?*, ?+, ?-, ?/, ?=, ??,
+            ?^, ?_, ?`, ?(, ?|, ?), ?~], min: 1)
+  end
+
+  def atom do
+    # optional(cfws())
+    # |> concat(atext())
+    # |> optional(cfws())
+    atext()
+  end
+
+  def dot_atom_text do
+    atext()
+    |> repeat(period() |> concat(atext()))
+    |> traverse(:join_address)
+    |> traverse(:unpercent)
+  end
 end

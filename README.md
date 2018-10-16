@@ -115,6 +115,7 @@ iex> URL.parse("data:,Hello%20World%21")
 }
 ```
 ### Parse a `mailto` URL
+A `mailto` URL will be parsed and percent encoding will be decoded.  Note that [RFC2047 encoded-words](https://tools.ietf.org/html/rfc2047) is not currently supported.
 ```elixir
 iex> URL.parse "mailto:infobot@example.com?subject=current-issue"
 %URL{
