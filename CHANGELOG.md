@@ -4,7 +4,7 @@ This is the changelog for URL version 0.3.0 released on October 16, 2018.  For o
 
 ### Enhancements
 
-* Now supports the `mailto` URL type.  See `URL.Mailto`
+* Adds support for the `mailto` URL type.  See `URL.Mailto`
 
 ### Bug Fixes
 

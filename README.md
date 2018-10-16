@@ -139,7 +139,7 @@ Configure `ex_url` in `mix.exs`:
 ```elixir
   defp deps do
     [
-      {:ex_url, "~> 0.2"},
+      {:ex_url, "~> 0.3"},
       ...
     ]
   end
@@ -155,7 +155,7 @@ Option configuration in `mix.exs`:
 ```elixir
   defp deps do
     [
-      {:ex_url, "~> 0.2"},
+      {:ex_url, "~> 0.3"},
       {:ex_phone_number, "~> 0.1"},
       {:ex_cldr, "~> 1.7"},
       {:gettext, "~> 0.13"}
