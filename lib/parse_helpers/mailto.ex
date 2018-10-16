@@ -1,4 +1,6 @@
 defmodule URL.ParseHelpers.Mailto do
+  @moduledoc false
+
   import NimbleParsec
   import URL.ParseHelpers.Core
 
@@ -13,12 +15,14 @@ defmodule URL.ParseHelpers.Mailto do
   # domain = dot-atom-text / "[" *dtext-no-obs "]"
   # dtext-no-obs = %d33-90 / ; Printable US-ASCII
 
+  @doc false
   def to do
     optional(addr_spec())
     |> repeat(ignore(comma()) |> concat(addr_spec()))
     |> tag(:to)
   end
 
+  @doc false
   def addr_spec do
     local_part()
     |> concat(at_symbol())
@@ -26,6 +30,7 @@ defmodule URL.ParseHelpers.Mailto do
     |> traverse(:join_address)
   end
 
+  @doc false
   def join_address(_rest, parts, context, _, _) do
     domain =
       parts
@@ -38,6 +43,7 @@ defmodule URL.ParseHelpers.Mailto do
     {[domain], context}
   end
 
+  @doc false
   def local_part do
     choice([
       quoted_string(),
@@ -45,6 +51,7 @@ defmodule URL.ParseHelpers.Mailto do
     ])
   end
 
+  @doc false
   def domain do
     choice([
       quoted_string(),
@@ -52,12 +59,14 @@ defmodule URL.ParseHelpers.Mailto do
     ])
   end
 
+  @doc false
   def hfields do
     optional(hfield())
     |> repeat(ignore(ampersand()) |> concat(hfield()))
     |> reduce({Map, :new, []})
   end
 
+  @doc false
   def hfield do
     hfname()
     |> ignore(equals())
@@ -65,11 +74,13 @@ defmodule URL.ParseHelpers.Mailto do
     |> reduce(:tupleize)
   end
 
+  @doc false
   def hfname do
     param_string()
     |> traverse(:unpercent)
   end
 
+  @doc false
   def hfvalue do
     param_string()
     |> traverse(:unpercent)
@@ -89,17 +100,17 @@ defmodule URL.ParseHelpers.Mailto do
   #                     "~"
   #
   # atom            =   [CFWS] 1*atext [CFWS]
-  #
   # dot-atom-text   =   1*atext *("." 1*atext)
-  #
   # dot-atom        =   [CFWS] dot-atom-text [CFWS]
 
+  @doc false
   def atext do
     ascii_string([?0..?9, ?a..?z, ?A..?Z, ?!, ?#, ?$,
             ?%, ?&, ?', ?*, ?+, ?-, ?/, ?=, ??,
             ?^, ?_, ?`, ?(, ?|, ?), ?~], min: 1)
   end
 
+  @doc false
   def atom do
     # optional(cfws())
     # |> concat(atext())
@@ -107,6 +118,7 @@ defmodule URL.ParseHelpers.Mailto do
     atext()
   end
 
+  @doc false
   def dot_atom_text do
     atext()
     |> repeat(period() |> concat(atext()))

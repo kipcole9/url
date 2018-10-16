@@ -1,4 +1,7 @@
 defmodule URL.Tel do
+  @moduledoc """
+  Parses a `tel` URL
+  """
   import NimbleParsec
   import URL.ParseHelpers.{Core, Params, Unwrap}
 

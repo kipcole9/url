@@ -4,6 +4,7 @@ defmodule URL.ParseHelpers.Params do
   import NimbleParsec
   import URL.ParseHelpers.Core
 
+  @doc false
   def params do
     repeat(ignore(semicolon()) |> concat(param()))
     |> reduce({Map, :new, []})
@@ -11,6 +12,7 @@ defmodule URL.ParseHelpers.Params do
   end
 
   #   parameter  := attribute "=" value
+  @doc false
   def param do
     choice([
       attribute() |> ignore(equals()) |> concat(value()),
@@ -19,10 +21,12 @@ defmodule URL.ParseHelpers.Params do
     |> reduce(:tupleize)
   end
 
+  @doc false
   def tupleize([key, value]) do
     {String.downcase(key), value}
   end
 
+  @doc false
   def normalize_params(url, param_map) do
     params =
       url
@@ -37,6 +41,7 @@ defmodule URL.ParseHelpers.Params do
     Keyword.put(url, :params, Map.new(params))
   end
 
+  @doc false
   def integerize(string) do
     case Integer.parse(string) do
       :error -> string
@@ -45,6 +50,7 @@ defmodule URL.ParseHelpers.Params do
     end
   end
 
+  @doc false
   def floatize(string) do
     case Float.parse(string) do
       :error -> string
@@ -53,6 +59,7 @@ defmodule URL.ParseHelpers.Params do
     end
   end
 
+  @doc false
   def numberize(string) do
     case Integer.parse(string) do
       {int, ""} -> int

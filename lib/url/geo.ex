@@ -1,4 +1,7 @@
 defmodule URL.Geo do
+  @moduledoc """
+  Parses a `geo` URL
+  """
   import NimbleParsec
   import URL.ParseHelpers.{Core, Params, Unwrap}
   alias URL.ParseHelpers.Params

@@ -1,11 +1,11 @@
 defmodule URL do
   @moduledoc """
-  Utilities for working with URLs.
+  Functions for parsing URLs
 
   This module provides functions for parsing URLs. It is modelled on
   Elixir's `URI` module but will also parse scheme-specific URIs such
   as [geo](https://tools.ietf.org/rfc/rfc5870), [data](https://tools.ietf.org/html/rfc2397)
-  and [tel](https://tools.ietf.org/html/rfc3966).
+  [tel](https://tools.ietf.org/html/rfc3966) and [mailto](https://tools.ietf.org/html/rfc2047).
 
   """
   defstruct scheme: nil,

@@ -15,101 +15,121 @@ defmodule URL.ParseHelpers.Core do
     |> label("a newline (either CRLF or LF)")
   end
 
+  @doc false
   def colon do
     ascii_char([?:])
     |> label("a colon")
   end
 
+  @doc false
   def plus do
     ascii_char([?+])
     |> label("a plus sign")
   end
 
+  @doc false
   def semicolon do
     ascii_char([?;])
     |> label("a semicolon")
   end
 
+  @doc false
   def period do
     ascii_char([?.])
     |> label("a dot character")
   end
 
+  @doc false
   def comma do
     ascii_char([?,])
     |> label("a comma")
   end
 
+  @doc false
   def at_symbol do
     ascii_char([?@])
     |> label("an at symbol")
   end
 
+  @doc false
   def question_mark do
     ascii_char([??])
     |> label("a question mark")
   end
 
+  @doc false
   def ampersand do
     ascii_char([?&])
     |> label("an ampersand")
   end
 
+  @doc false
   def digit do
     ascii_char([?0..?9])
     |> label("a decimal digit")
   end
 
+  @doc false
   def digits do
     ascii_string([?0..?9], min: 1)
     |> label("an string of digits")
   end
 
+  @doc false
   def sign do
     ascii_char([?-, ?+])
     |> reduce({List, :to_string, []})
   end
 
+  @doc false
   def hex_digit do
     ascii_char([?0..?9, ?a..?f, ?A..?F])
     |> label("a hexidecimal digit")
   end
 
+  @doc false
   def equals do
     ascii_char([?=])
     |> label("an equals sign")
   end
 
+  @doc false
   def dquote do
     ascii_char([?"])
     |> label("a double quote character")
   end
 
+  @doc false
   def hex_string do
     ascii_string([?a..?f, ?A..?F, ?0..?9], min: 1)
     |> label("a hexidecimal digit")
   end
 
+  @doc false
   def alphanum_and_dash do
     ascii_string([?a..?z, ?A..?Z, ?0..?9, ?-], min: 1)
     |> label("an alphanumeric character or a dash")
   end
 
+  @doc false
   def alphabetic do
     ascii_string([?a..?z, ?A..?Z], min: 1)
     |> label("an alphabetic character")
   end
 
+  @doc false
   def alphanumeric do
     ascii_string([?a..?z, ?A..?Z, ?0..?9], min: 1)
     |> label("an alphanumeric character")
   end
 
+  @doc false
   def base64 do
     ascii_string([?a..?z, ?A..?Z, ?0..?9, ?/, ?+, ?=], min: 1)
     |> label("a base64 encoded string")
   end
 
+  @doc false
   def url_string do
     choice([
       reserved(),
@@ -120,6 +140,7 @@ defmodule URL.ParseHelpers.Core do
     |> reduce({Enum, :join, []})
   end
 
+  @doc false
   def param_string do
     choice([
       unreserved(),
@@ -132,6 +153,7 @@ defmodule URL.ParseHelpers.Core do
   # reserved    = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" |
   #               "$" | ","
   @reserved [?;, ?/, ??, ?:, ?@, ?&, ?=, ?+, ?$, ?,]
+  @doc false
   def reserved do
     ascii_string(@reserved, min: 1)
   end
@@ -139,6 +161,7 @@ defmodule URL.ParseHelpers.Core do
   # unreserved  = alphanum | mark
   # mark        = "-" | "_" | "." | "!" | "~" | "*" | "'" | "(" | ")"
   @unreserved [?a..?z, ?A..?Z, ?0..?9, ?-, ?_, ?., ?!, ?~, ?*, ?', ?(, ?)]
+  @doc false
   def unreserved do
     ascii_string(@unreserved, min: 1)
   end
@@ -146,16 +169,19 @@ defmodule URL.ParseHelpers.Core do
   # escaped     = "%" hex hex
   # hex         = digit | "A" | "B" | "C" | "D" | "E" | "F" |
   #                       "a" | "b" | "c" | "d" | "e" | "f"
+  @doc false
   def escaped do
     ascii_char([?%]) |> concat(hex_digit()) |> concat(hex_digit())
     |> reduce({List, :to_string, []})
   end
 
+  @doc false
   def data do
     url_string()
     |> unwrap_and_tag(:data)
   end
 
+  @doc false
   def anycase_string(string) do
     string
     |> String.upcase
@@ -191,25 +217,30 @@ defmodule URL.ParseHelpers.Core do
     [c, c + 32]
   end
 
+  @doc false
   def quoted_string do
     ignore(ascii_char([?"]))
     |> concat(qsafe_string())
     |> ignore(ascii_char([?"]))
   end
 
+  @doc false
   def base64_param do
     string("base64")
     |> traverse(:base64_encoding)
   end
 
+  @doc false
   def base64_encoding(_rest, _args, context, _, _) do
     {["base64", "encoding"], context}
   end
 
+  @doc false
   def number do
     choice([float(), integer()])
   end
 
+  @doc false
   def integer do
     optional(sign())
     |> concat(digits())
@@ -217,6 +248,7 @@ defmodule URL.ParseHelpers.Core do
     |> reduce(:to_integer)
   end
 
+  @doc false
   def float do
     optional(sign())
     |> concat(digits())
@@ -226,10 +258,12 @@ defmodule URL.ParseHelpers.Core do
     |> reduce(:to_float)
   end
 
+  @doc false
   def to_integer([number]) do
     String.to_integer(number)
   end
 
+  @doc false
   def to_float([number]) do
     String.to_float(number)
   end
@@ -250,10 +284,12 @@ defmodule URL.ParseHelpers.Core do
   #               "/" / "[" / "]" / "?" / "="
   #               ; Must be in quoted-string,
   #               ; to use within parameter values
+  @doc false
   def attribute do
     token()
   end
 
+  @doc false
   def value do
     choice([
       quoted_string() |> traverse(:unescape),
@@ -262,6 +298,7 @@ defmodule URL.ParseHelpers.Core do
   end
 
   #   mediatype  := [ type "/" subtype ] *( ";" parameter )
+  @doc false
   def mediatype do
     optional(token()
     |> string("/")
@@ -273,12 +310,14 @@ defmodule URL.ParseHelpers.Core do
   @non_ctrls Enum.to_list(32..126)
   @tspecials [?(, ?), ?<, ?>, ?@, ?,, ?;, ?:, ?\\, ?\", ?/, ?[, ?], ??, ?=, 0x20]
   @token MapSet.difference(MapSet.new(@non_ctrls), MapSet.new(@tspecials)) |> MapSet.to_list
+  @doc false
   def token do
     ascii_string(@token, min: 1)
     |> traverse(:unpercent)
   end
 
   @tel_digits [?-, ?., ?(, ?), ?0..?9]
+  @doc false
   def tel do
     optional(ascii_string([?+], min: 1))
     |> ascii_string(@tel_digits, min: 1)
@@ -287,6 +326,7 @@ defmodule URL.ParseHelpers.Core do
     |> label("A telephone number")
   end
 
+  @doc false
   def unpercent(_rest, [arg], context, _, _) do
     {[URI.decode(arg)], context}
   end
@@ -294,20 +334,24 @@ defmodule URL.ParseHelpers.Core do
   #    SAFE-CHAR = WSP / "!" / %x23-39 / %x3C-7E / NON-ASCII
   #      ; Any character except CTLs, DQUOTE, ";", ":"
   #      ; ALSO ALLOW &NBSP 0xa0 since Apple Contacts generates it
+  @doc false
   def safe_string do
     ascii_string([0x20, 0x09, ?!, 0x23..0x39, 0x3c..0x7e], min: 1)
   end
 
   #    QSAFE-CHAR = WSP / "!" / %x23-7E / NON-ASCII
   #      ; Any character except CTLs, DQUOTE
+  @doc false
   def qsafe_string do
     ascii_string([0x20, 0x09, ?!, 0x23..0x7e], min: 1)
   end
 
+  @doc false
   def unescape(_rest, args, context, _, _) do
     {unescape(args), context}
   end
 
+  @doc false
   def unescape(values) when is_list(values) do
     Enum.map(values, &unescape/1)
   end
@@ -322,6 +366,7 @@ defmodule URL.ParseHelpers.Core do
   def unescape(<< c :: binary-size(1), rest :: binary>>), do: c <> unescape(rest)
   def unescape(values), do: values
 
+  @doc false
   def structify(map, module) do
     struct(module, map)
   end
