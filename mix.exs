@@ -29,8 +29,8 @@ defmodule Url.MixProject do
 
   defp description do
     """
-    Utilities to parse URLs incuding parsing scheme-specific
-    URLs including `tel`, `data` and `geo`.  Modelled on the
+    Utilities to parse URLs incuding scheme-specific
+    URLs such as `tel`, `data` and `geo` and `mailto`.  Modelled on the
     URI module.
     """
   end
