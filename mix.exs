@@ -1,7 +1,7 @@
 defmodule Url.MixProject do
   use Mix.Project
 
-  @version "0.3.0"
+  @version "0.4.0"
 
   def project do
     [
@@ -29,9 +29,9 @@ defmodule Url.MixProject do
 
   defp description do
     """
-    Utilities to parse URLs incuding scheme-specific
-    URLs such as `tel`, `data` and `geo` and `mailto`.  Modelled on the
-    URI module.
+    Functions to parse URLs incuding scheme-specific
+    URLs such as `tel`, `data`, `geo`, `uuid` and `mailto`.
+    Modelled on the URI module.
     """
   end
 

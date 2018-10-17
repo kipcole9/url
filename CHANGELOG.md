@@ -1,6 +1,14 @@
+# Changelog for URL v0.4.0
+
+This is the changelog for URL version 0.4.0 released on October 18th, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+
+### Enhancements
+
+* Adds support for the `uuid` URL type.  See `URL.UUID`
+
 # Changelog for URL v0.3.0
 
-This is the changelog for URL version 0.3.0 released on October 16, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+This is the changelog for URL version 0.3.0 released on October 16th, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
 
 ### Enhancements
 

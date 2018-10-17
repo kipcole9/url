@@ -5,7 +5,8 @@ defmodule URL do
   This module provides functions for parsing URLs. It is modelled on
   Elixir's `URI` module but will also parse scheme-specific URIs such
   as [geo](https://tools.ietf.org/rfc/rfc5870), [data](https://tools.ietf.org/html/rfc2397)
-  [tel](https://tools.ietf.org/html/rfc3966) and [mailto](https://tools.ietf.org/html/rfc2047).
+  [tel](https://tools.ietf.org/html/rfc3966), [mailto](https://tools.ietf.org/html/rfc2047),
+  and [uuid](https://tools.ietf.org/html/draft-kindel-uuid-uri-00).
 
   """
   defstruct scheme: nil,

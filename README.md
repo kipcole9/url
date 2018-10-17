@@ -9,6 +9,7 @@
 * [geo](https://tools.ietf.org/rfc/rfc5870)
 * [data](https://tools.ietf.org/html/rfc2397)
 * [mailto](https://tools.ietf.org/html/rfc6068)
+* [uuid](https://tools.ietf.org/html/draft-kindel-uuid-uri-00)
 * and [tel](https://tools.ietf.org/html/rfc3966)
 
 The basic API is `URL.parse/1`.  The function `URL.format/1` is delegated to the URI module.
@@ -130,6 +131,24 @@ iex> URL.parse "mailto:infobot@example.com?subject=current-issue"
   port: nil,
   query: "subject=current-issue",
   scheme: "mailto",
+  userinfo: nil
+}
+```
+### Parse a `uuid` URL
+```elixir
+iex> URL.parse "uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6;a=b"
+%URL{
+  authority: nil,
+  fragment: nil,
+  host: nil,
+  parsed_path: %URL.UUID{
+    params: %{"a" => "b"},
+    uuid: "f81d4fae-7dec-11d0-a765-00a0c91e6bf6"
+  },
+  path: "f81d4fae-7dec-11d0-a765-00a0c91e6bf6;a=b",
+  port: nil,
+  query: nil,
+  scheme: "uuid",
   userinfo: nil
 }
 ```

@@ -105,6 +105,7 @@ defmodule URL.ParseHelpers.Core do
     |> label("a hexidecimal digit")
   end
 
+  @doc false
   def uuid do
     ascii_string([?a..?f, ?A..?F, ?0..?9], 8)
     |> concat(ascii_string([?-], 1))
