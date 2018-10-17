@@ -105,6 +105,20 @@ defmodule URL.ParseHelpers.Core do
     |> label("a hexidecimal digit")
   end
 
+  def uuid do
+    ascii_string([?a..?f, ?A..?F, ?0..?9], 8)
+    |> concat(ascii_string([?-], 1))
+    |> ascii_string([?a..?f, ?A..?F, ?0..?9], 4)
+    |> concat(ascii_string([?-], 1))
+    |> ascii_string([?a..?f, ?A..?F, ?0..?9], 4)
+    |> concat(ascii_string([?-], 1))
+    |> ascii_string([?a..?f, ?A..?F, ?0..?9], 4)
+    |> concat(ascii_string([?-], 1))
+    |> ascii_string([?a..?f, ?A..?F, ?0..?9], 12)
+    |> reduce({Enum, :join, []})
+    |> unwrap_and_tag(:uuid)
+  end
+
   @doc false
   def alphanum_and_dash do
     ascii_string([?a..?z, ?A..?Z, ?0..?9, ?-], min: 1)

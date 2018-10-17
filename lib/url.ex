@@ -34,7 +34,8 @@ defmodule URL do
     "tel" => URL.Tel,
     "data" => URL.Data,
     "geo" =>  URL.Geo,
-    "mailto" => URL.Mailto
+    "mailto" => URL.Mailto,
+    "uuid" => URL.UUID
   }
 
   import URL.ParseHelpers.Core, only: [structify: 2]
