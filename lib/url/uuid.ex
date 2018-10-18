@@ -30,6 +30,13 @@ defmodule URL.UUID do
     end
   end
 
+  def parse(%URI{scheme: "urn", path: path}) do
+    case URL.parse(path) do
+      %URL{parsed_path: parsed_path} -> parsed_path
+      other -> other
+    end
+  end
+
   defparsecp :parse_uuid,
     uuid()
     |> concat(params())

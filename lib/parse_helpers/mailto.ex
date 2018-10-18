@@ -27,7 +27,7 @@ defmodule URL.ParseHelpers.Mailto do
     local_part()
     |> concat(at_symbol())
     |> concat(domain())
-    |> traverse(:join_address)
+    |> reduce({Enum, :join, []})
   end
 
   @doc false
@@ -122,7 +122,7 @@ defmodule URL.ParseHelpers.Mailto do
   def dot_atom_text do
     atext()
     |> repeat(period() |> concat(atext()))
-    |> traverse(:join_address)
+    |> reduce({Enum, :join, []})
     |> traverse(:unpercent)
   end
 end
