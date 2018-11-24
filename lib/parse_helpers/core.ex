@@ -9,63 +9,63 @@ defmodule URL.ParseHelpers.Core do
   # Allow NL line ends for simpler compatibility
   def crlf do
     choice([
-      ascii_char([@cr]) |> ascii_char([@lf]),
-      ascii_char([@lf])
+      ascii_string([@cr], 1) |> ascii_string([@lf], 1),
+      ascii_string([@lf], 1)
     ])
     |> label("a newline (either CRLF or LF)")
   end
 
   @doc false
   def colon do
-    ascii_char([?:])
+    ascii_string([?:], 1)
     |> label("a colon")
   end
 
   @doc false
   def plus do
-    ascii_char([?+])
+    ascii_string([?+], 1)
     |> label("a plus sign")
   end
 
   @doc false
   def semicolon do
-    ascii_char([?;])
+    ascii_string([?;], 1)
     |> label("a semicolon")
   end
 
   @doc false
   def period do
-    ascii_char([?.])
+    ascii_string([?.], 1)
     |> label("a dot character")
   end
 
   @doc false
   def comma do
-    ascii_char([?,])
+    ascii_string([?,], 1)
     |> label("a comma")
   end
 
   @doc false
   def at_symbol do
-    ascii_char([?@])
+    ascii_string([?@], 1)
     |> label("an at symbol")
   end
 
   @doc false
   def question_mark do
-    ascii_char([??])
+    ascii_string([??], 1)
     |> label("a question mark")
   end
 
   @doc false
   def ampersand do
-    ascii_char([?&])
+    ascii_string([?&], 1)
     |> label("an ampersand")
   end
 
   @doc false
   def digit do
-    ascii_char([?0..?9])
+    ascii_string([?0..?9], 1)
     |> label("a decimal digit")
   end
 
@@ -77,25 +77,24 @@ defmodule URL.ParseHelpers.Core do
 
   @doc false
   def sign do
-    ascii_char([?-, ?+])
-    |> reduce({List, :to_string, []})
+    ascii_string([?-, ?+], 1)
   end
 
   @doc false
   def hex_digit do
-    ascii_char([?0..?9, ?a..?f, ?A..?F])
+    ascii_string([?0..?9, ?a..?f, ?A..?F], 1)
     |> label("a hexidecimal digit")
   end
 
   @doc false
   def equals do
-    ascii_char([?=])
+    ascii_string([?=], 1)
     |> label("an equals sign")
   end
 
   @doc false
   def dquote do
-    ascii_char([?"])
+    ascii_string([?"], 1)
     |> label("a double quote character")
   end
 
@@ -118,6 +117,7 @@ defmodule URL.ParseHelpers.Core do
     |> ascii_string([?a..?f, ?A..?F, ?0..?9], 12)
     |> reduce({Enum, :join, []})
     |> unwrap_and_tag(:uuid)
+    |> label("a valid UUID")
   end
 
   @doc false
@@ -186,8 +186,8 @@ defmodule URL.ParseHelpers.Core do
   #                       "a" | "b" | "c" | "d" | "e" | "f"
   @doc false
   def escaped do
-    ascii_char([?%]) |> concat(hex_digit()) |> concat(hex_digit())
-    |> reduce({List, :to_string, []})
+    ascii_string([?%], 1) |> concat(hex_digit()) |> concat(hex_digit())
+    |> reduce({Enum, :join, []})
   end
 
   @doc false
@@ -234,9 +234,9 @@ defmodule URL.ParseHelpers.Core do
 
   @doc false
   def quoted_string do
-    ignore(ascii_char([?"]))
+    ignore(ascii_string([?"], 1))
     |> concat(qsafe_string())
-    |> ignore(ascii_char([?"]))
+    |> ignore(ascii_string([?"], 1))
   end
 
   @doc false
