@@ -21,6 +21,10 @@ defmodule URL.UUID do
       iex> URL.UUID.parse(uuid)
       %URL.UUID{params: %{"a" => "b"}, uuid: "f81d4fae-7dec-11d0-a765-00a0c91e6bf6"}
 
+      iex> uuid = URI.parse("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6;a=b")
+      iex> URL.UUID.parse(uuid)
+      %URL.UUID{params: %{"a" => "b"}, uuid: "f81d4fae-7dec-11d0-a765-00a0c91e6bf6"}
+
   """
   @spec parse(URI.t()) :: __MODULE__.t() | {:error, {module(), binary()}}
   def parse(%URI{scheme: "uuid", path: path}) do
