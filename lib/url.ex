@@ -9,6 +9,7 @@ defmodule URL do
   and [uuid](https://tools.ietf.org/html/draft-kindel-uuid-uri-00).
 
   """
+  @type uri_type :: nil | URL.Data.t() | URL.Geo.t() | URL.Tel.t() | URL.UUID.t() | URL.Mailto.t()
   defstruct scheme: nil,
     path: nil,
     query: nil,
@@ -28,7 +29,7 @@ defmodule URL do
     query: nil | binary(),
     scheme: nil | binary(),
     userinfo: nil | binary(),
-    parsed_path: nil | URL.Data.t() | URL.Geo.t() | URL.Tel.t() | URL.UUID.t() | URL.Mailto.t()
+    parsed_path: uri_type()
   }
 
   @supported_schemes %{
@@ -96,11 +97,20 @@ defmodule URL do
         "url" => "http://fonzi.com/"
       }
 
+      iex> mailto = "mailto:user@%E7%B4%8D%E8%B1%86.example.org?subject=Test&body=NATTO"
+      iex> URL.parse(mailto) |> URL.parse_query_string
+      %{"body" => "NATTO", "subject" => "Test"}
+
   """
-  def parse_query_string(query) do
+  @spec parse_query_string(String.t() | uri_type()) :: Map.t() | {:error, {module(), binary()}}
+  def parse_query_string(query) when is_binary(query) do
     with {:ok, [params]} <- unwrap(parse_query(query)) do
       params
     end
+  end
+
+  def parse_query_string(%{query: query}) do
+    parse_query_string(query)
   end
 
   @doc false
