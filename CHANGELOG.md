@@ -1,3 +1,13 @@
+# Changelog for URL v1.0.0
+
+This is the changelog for URL version 1.0.0 released on November 25th, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+
+### Enhancements
+
+* Supports [ex_cldr version 2.0.0](https://hex.pm/packages/ex_cldr).  This is an optional dependency.
+
+* Add `URL.parse_query_string/1`
+
 # Changelog for URL v0.4.0
 
 This is the changelog for URL version 0.4.0 released on October 18th, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)

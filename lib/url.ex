@@ -28,7 +28,7 @@ defmodule URL do
     query: nil | binary(),
     scheme: nil | binary(),
     userinfo: nil | binary(),
-    parsed_path: nil | URL.Data.t() | URL.Geo.t() | URL.Tel.t()
+    parsed_path: nil | URL.Data.t() | URL.Geo.t() | URL.Tel.t() | URL.UUID.t() | URL.Mailto.t()
   }
 
   @supported_schemes %{
@@ -40,11 +40,13 @@ defmodule URL do
   }
 
   import URL.ParseHelpers.Core, only: [structify: 2]
+  import NimbleParsec
+  import URL.ParseHelpers.{Core, Mailto, Params, Unwrap}
 
   @doc """
   Parses a url and returns a %URL{} struct that
   has the same shape as Elixir's %URI{} with the
-  addition of the `p:arsed_path` key.
+  addition of the `parsed_path` key.
 
   ## Example
 
@@ -73,6 +75,40 @@ defmodule URL do
     |> parse_scheme
     |> merge_uri
   end
+
+  @doc """
+  Parse a URL query string and percent decode.
+
+  ## Returns
+
+  * Either a map of query params or
+
+  * an `{:error, {URL.Parser.ParseError, reason}}` tuple
+
+  ## Example
+
+      iex> URL.parse_query_string "url=http%3a%2f%2ffonzi.com%2f&name=Fonzi&mood=happy&coat=leather"
+      %{
+        "coat" => "leather",
+        "mood" => "happy",
+        "name" => "Fonzi",
+        "url" => "http://fonzi.com/"
+      }
+
+  """
+  def parse_query_string(query) do
+    with {:ok, [params]} <- unwrap(parse_query(query)) do
+      params
+    end
+  end
+
+  @doc false
+  def parse_query(nil) do
+    {:ok, [%{}], "", %{}, {0, 0}, 0}
+  end
+
+  defparsec :parse_query,
+    optional(hfields())
 
   defdelegate to_string(url), to: URI
 

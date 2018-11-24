@@ -170,11 +170,14 @@ If configured in `mix.exs`, URL will use the following libraries:
 
 * [ex_cldr](https://hex.pm/packages/ex_cldr) and [gettext](https://hex.pm/packages/gettext) will be used to determine the current locale and therefore the current territory (country) for parsing and formatting telephone numbers that don't have a country code supplied.
 
-Option configuration in `mix.exs`:
+Optional configuration in `mix.exs`:
 ```elixir
   defp deps do
     [
+      # Required
       {:ex_url, "~> 0.3"},
+
+      # Optional
       {:ex_phone_number, "~> 0.1"},
       {:ex_cldr, "~> 1.7"},
       {:gettext, "~> 0.13"}

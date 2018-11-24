@@ -3,7 +3,7 @@ defmodule URL.Mailto do
   Parses a `mailto` URL
   """
   import NimbleParsec
-  import URL.ParseHelpers.{Core, Mailto, Params, Unwrap}
+  import URL.ParseHelpers.{Core, Mailto, Unwrap}
 
   @type t() :: %__MODULE__{
     to: [binary(), ...],
@@ -28,7 +28,7 @@ defmodule URL.Mailto do
   @spec parse(URI.t()) :: __MODULE__.t() | {:error, {module(), binary()}}
   def parse(%URI{scheme: "mailto", path: path, query: query}) do
     with {:ok, mailto} <- unwrap(parse_mailto(path)),
-         {:ok, [params]} <- unwrap(parse_query(query)) do
+         {:ok, [params]} <- unwrap(URL.parse_query(query)) do
       mailto
       |> structify(__MODULE__)
       |> Map.put(:params, params)
@@ -37,12 +37,5 @@ defmodule URL.Mailto do
 
   defparsecp :parse_mailto,
     optional(to())
-
-  defp parse_query(nil) do
-    {:ok, [%{}], "", %{}, {0, 0}, 0}
-  end
-
-  defparsecp :parse_query,
-    optional(hfields())
 
 end

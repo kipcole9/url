@@ -86,7 +86,7 @@ defmodule URL.Tel do
 
   if Code.ensure_loaded?(Cldr) do
     defp cldr_territory do
-      Cldr.get_current_locale().territory
+      Cldr.get_locale().territory
     end
   else
     defp cldr_territory do

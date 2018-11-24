@@ -47,7 +47,7 @@ defmodule Url.MixProject do
       {:jason, "~> 1.0"},
       {:ex_doc, "~> 0.18", only: [:dev, :doc]},
       {:ex_phone_number, "~> 0.1", optional: true},
-      {:ex_cldr, "~> 1.7", optional: true},
+      {:ex_cldr, "~> 2.0", optional: true},
       {:gettext, "~> 0.13", optional: true}
     ]
   end
