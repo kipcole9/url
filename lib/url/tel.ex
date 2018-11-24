@@ -17,7 +17,7 @@ defmodule URL.Tel do
   @doc """
   Parse a URI with the `:scheme` of "tel"
 
-  ## Example
+  ## Examples
 
       iex> tel = URI.parse "tel:+61-0407-555-987"
       iex> URL.Tel.parse(tel)
