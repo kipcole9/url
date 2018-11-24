@@ -87,7 +87,7 @@ defmodule URL do
 
   * an `{:error, {URL.Parser.ParseError, reason}}` tuple
 
-  ## Example
+  ## Examples
 
       iex> URL.parse_query_string "url=http%3a%2f%2ffonzi.com%2f&name=Fonzi&mood=happy&coat=leather"
       %{
