@@ -102,11 +102,15 @@ defmodule URL do
       %{"body" => "NATTO", "subject" => "Test"}
 
   """
-  @spec parse_query_string(String.t() | uri_type()) :: Map.t() | {:error, {module(), binary()}}
+  @spec parse_query_string(String.t() | Map.t()) :: Map.t() | {:error, {module(), binary()}}
   def parse_query_string(query) when is_binary(query) do
     with {:ok, [params]} <- unwrap(parse_query(query)) do
       params
     end
+  end
+
+  def parse_query_string({:error, {_, _}} = error) do
+    error
   end
 
   def parse_query_string(%{query: query}) do
