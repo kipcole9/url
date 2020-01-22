@@ -12,7 +12,7 @@
 * [uuid](https://tools.ietf.org/html/draft-kindel-uuid-uri-00)
 * and [tel](https://tools.ietf.org/html/rfc3966)
 
-The basic API is `URL.parse/1`.  The function `URL.format/1` is delegated to the URI module.
+The basic API is `URL.parse/1`.  The function `URL.to_string/1` is delegated to the URI module.
 
 Of course these are really URI's, not URL's but its a reasonable choice of name
 given that [WHATWG](https://en.wikipedia.org/wiki/WHATWG) prefers URL over URI:

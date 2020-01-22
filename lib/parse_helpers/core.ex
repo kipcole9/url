@@ -328,7 +328,7 @@ defmodule URL.ParseHelpers.Core do
   @doc false
   def token do
     ascii_string(@token, min: 1)
-    |> traverse(:unpercent)
+    |> post_traverse(:unpercent)
   end
 
   @tel_digits [?-, ?., ?(, ?), ?0..?9]

@@ -1,12 +1,18 @@
-# Changelog for URL v1.1.0
+# Changelog for URL v1.2.0
 
-This is the changelog for URL version 1.1.0 released on January 23rd, 2020.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+This is the changelog for URL version 1.2.0 released on January 23rd, 2020.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
 
 ### Enhancements
 
-* Updates to dependencies and confirms support of Elixir 1.10
-
 * Executes `String.trim/1` on parsed elements of URI's so that "https://     google.fr" will return "google.fr" as the host, not "    google.fr".
+
+# Changelog for URL v1.1.0
+
+This is the changelog for URL version 1.1.0 released on April 7th, 2019.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+
+### Enhancements
+
+* Update to `NimbleParsec` version 0.5
 
 # Changelog for URL v1.0.0
 
