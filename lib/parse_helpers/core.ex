@@ -242,7 +242,7 @@ defmodule URL.ParseHelpers.Core do
   @doc false
   def base64_param do
     string("base64")
-    |> traverse(:base64_encoding)
+    |> post_traverse(:base64_encoding)
   end
 
   @doc false
@@ -307,8 +307,8 @@ defmodule URL.ParseHelpers.Core do
   @doc false
   def value do
     choice([
-      quoted_string() |> traverse(:unescape),
-      token() |> traverse(:unpercent)
+      quoted_string() |> post_traverse(:unescape),
+      token() |> post_traverse(:unpercent)
     ])
   end
 

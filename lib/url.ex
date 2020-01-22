@@ -146,6 +146,7 @@ defmodule URL do
   defp merge_uri({uri, parsed_path}) do
     uri
     |> Map.to_list
+    |> Enum.map(&__MODULE__.trim/1)
     |> structify(__MODULE__)
     |> add_parsed_path(parsed_path)
   end
@@ -154,4 +155,12 @@ defmodule URL do
     Map.put(url, :parsed_path, parsed_path)
   end
 
+  @doc false
+  def trim({key, item}) when is_binary(item) do
+    {key, String.trim(item)}
+  end
+
+  def trim(other) do
+    other
+  end
 end

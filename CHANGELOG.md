@@ -1,3 +1,13 @@
+# Changelog for URL v1.1.0
+
+This is the changelog for URL version 1.1.0 released on January 23rd, 2020.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+
+### Enhancements
+
+* Updates to dependencies and confirms support of Elixir 1.10
+
+* Executes `String.trim/1` on parsed elements of URI's so that "https://     google.fr" will return "google.fr" as the host, not "    google.fr".
+
 # Changelog for URL v1.0.0
 
 This is the changelog for URL version 1.0.0 released on November 25th, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)

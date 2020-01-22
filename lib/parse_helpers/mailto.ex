@@ -77,13 +77,13 @@ defmodule URL.ParseHelpers.Mailto do
   @doc false
   def hfname do
     param_string()
-    |> traverse(:unpercent)
+    |> post_traverse(:unpercent)
   end
 
   @doc false
   def hfvalue do
     param_string()
-    |> traverse(:unpercent)
+    |> post_traverse(:unpercent)
   end
 
   # From RFC5322
@@ -123,6 +123,6 @@ defmodule URL.ParseHelpers.Mailto do
     atext()
     |> repeat(period() |> concat(atext()))
     |> reduce({Enum, :join, []})
-    |> traverse(:unpercent)
+    |> post_traverse(:unpercent)
   end
 end
