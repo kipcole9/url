@@ -7,7 +7,7 @@ defmodule URL.Mailto do
 
   @type t() :: %__MODULE__{
     to: [binary(), ...],
-    params: Map.t()
+    params: map()
   }
 
   defstruct to: nil, params: %{}

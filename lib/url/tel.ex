@@ -9,7 +9,7 @@ defmodule URL.Tel do
 
   @type t() :: %__MODULE__{
     tel: String.t(),
-    params: Map.t()
+    params: map()
   }
 
   @default_territory "US"

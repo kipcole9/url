@@ -10,7 +10,7 @@ defmodule URL.Geo do
     lat: number(),
     lng: number(),
     alt: nil | number(),
-    params: Map.t()
+    params: map()
   }
 
   defstruct lat: 0.0, lng: 0.0, alt: nil, params: %{}

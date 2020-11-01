@@ -7,7 +7,7 @@ defmodule URL.UUID do
 
   @type t() :: %__MODULE__{
     uuid: binary(),
-    params: Map.t()
+    params: map()
   }
 
   defstruct uuid: nil, params: %{}

@@ -10,7 +10,7 @@ defmodule URL.Data do
 
   @type t() :: %__MODULE__{
     mediatype: binary(),
-    params: Map.t()
+    params: map()
   }
 
   @doc """
@@ -25,7 +25,7 @@ defmodule URL.Data do
         mediatype: "text/plain",
         params: %{"encoding" => "base64"}
       }
-  
+
   """
   @spec parse(URI.t()) :: __MODULE__.t() | {:error, {module(), binary()}}
   def parse(%URI{scheme: "data", path: path}) do

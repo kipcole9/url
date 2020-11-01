@@ -45,7 +45,7 @@ defmodule Url.MixProject do
     [
       {:nimble_parsec, "~> 0.5"},
       {:jason, "~> 1.0"},
-      {:ex_doc, "~> 0.18", only: [:dev, :release]},
+      {:ex_doc, "~> 0.18", runtime: false},
       {:ex_phone_number, "~> 0.1", optional: true},
       {:ex_cldr, "~> 2.18", optional: true},
       {:gettext, "~> 0.13", optional: true}

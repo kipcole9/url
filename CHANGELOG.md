@@ -6,6 +6,12 @@ This is the changelog for URL version 1.3.0 released on November 1st.  For older
 
 * Support [CLDR 38](http://cldr.unicode.org/index/downloads/cldr-38)
 
+### Bug Fixes
+
+* Correct some types to use `map()`
+
+* Fix error resulting from inconsistent use of territories as atoms and strings
+
 # Changelog for URL v1.2.0
 
 This is the changelog for URL version 1.2.0 released on January 23rd, 2020.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
