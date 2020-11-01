@@ -1,7 +1,7 @@
 defmodule Url.MixProject do
   use Mix.Project
 
-  @version "1.2.0"
+  @version "1.3.0"
 
   def project do
     [
@@ -47,7 +47,7 @@ defmodule Url.MixProject do
       {:jason, "~> 1.0"},
       {:ex_doc, "~> 0.18", only: [:dev, :release]},
       {:ex_phone_number, "~> 0.1", optional: true},
-      {:ex_cldr, "~> 2.0", optional: true},
+      {:ex_cldr, "~> 2.18", optional: true},
       {:gettext, "~> 0.13", optional: true}
     ]
   end

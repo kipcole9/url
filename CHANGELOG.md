@@ -1,3 +1,11 @@
+# Changelog for URL v1.3.0
+
+This is the changelog for URL version 1.3.0 released on November 1st.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+
+### Enhancements
+
+* Support [CLDR 38](http://cldr.unicode.org/index/downloads/cldr-38)
+
 # Changelog for URL v1.2.0
 
 This is the changelog for URL version 1.2.0 released on January 23rd, 2020.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)

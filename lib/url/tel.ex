@@ -40,11 +40,11 @@ defmodule URL.Tel do
   if Code.ensure_loaded?(ExPhoneNumber) do
     defp parse_phone_number(number, territory \\ get_territory()) do
       territory = if unknown_territory?(territory), do: @default_territory, else: territory
-      ExPhoneNumber.parse(number, territory)
+      ExPhoneNumber.parse(number, to_string(territory))
     end
 
     defp unknown_territory?(territory) do
-      ExPhoneNumber.Metadata.get_country_code_for_region_code(territory) == 0
+      ExPhoneNumber.Metadata.get_country_code_for_region_code(to_string(territory)) == 0
     end
 
     defp format(%__MODULE__{tel: tel} = url, format \\ :international) do
