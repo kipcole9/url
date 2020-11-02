@@ -175,7 +175,7 @@ Optional configuration in `mix.exs`:
   defp deps do
     [
       # Required
-      {:ex_url, "~> 0.3"},
+      {:ex_url, "~> 1.3"},
 
       # Optional
       {:ex_phone_number, "~> 0.1"},
