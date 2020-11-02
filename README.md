@@ -96,7 +96,7 @@ iex> URL.parse("data:;base64,SGVsbG8gV29ybGQh")
   userinfo: nil
 }
 ```
-This second example shows the treatement of data that is not marked as `base64` encoded.  In this case it is considered to be `percent-encoded`.  It is also decoded during parsing.
+This second example shows the treatment of data that is not marked as `base64` encoded.  In this case it is considered to be `percent-encoded`.  It is also decoded during parsing.
 ```elixir
 iex> URL.parse("data:,Hello%20World%21")
 %URL{
@@ -179,7 +179,7 @@ Optional configuration in `mix.exs`:
 
       # Optional
       {:ex_phone_number, "~> 0.1"},
-      {:ex_cldr, "~> 1.7"},
+      {:ex_cldr, "~> 2.18"},
       {:gettext, "~> 0.13"}
       ...
     ]
