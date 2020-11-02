@@ -10,7 +10,8 @@ defmodule URL.Data do
 
   @type t() :: %__MODULE__{
     mediatype: binary(),
-    params: map()
+    params: map(),
+    data: String.t() | {:error, String.t()}
   }
 
   @doc """
@@ -28,6 +29,10 @@ defmodule URL.Data do
 
   """
   @spec parse(URI.t()) :: __MODULE__.t() | {:error, {module(), binary()}}
+  def parse(%URI{scheme: "data", path: nil}) do
+    struct(__MODULE__, data: "")
+  end
+
   def parse(%URI{scheme: "data", path: path}) do
     with {:ok, data} <- unwrap(parse_data(path)) do
       struct(__MODULE__, data)
@@ -38,6 +43,7 @@ defmodule URL.Data do
   defp decode_data(%__MODULE__{params: %{"encoding" => "base64"}, data: data} = url) do
     case Base.decode64(data) do
       {:ok, decoded} -> Map.put(url, :data, decoded)
+      :error -> Map.put(url, :data, {:error, data})
     end
   end
 
