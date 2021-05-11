@@ -1,7 +1,7 @@
 defmodule Url.MixProject do
   use Mix.Project
 
-  @version "1.3.0"
+  @version "1.3.1"
 
   def project do
     [
@@ -45,7 +45,7 @@ defmodule Url.MixProject do
     [
       {:nimble_parsec, "~> 1.0"},
       {:jason, "~> 1.0"},
-      {:ex_doc, "~> 0.18", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.18", only: [:dev, :release], runtime: false},
       {:ex_phone_number, "~> 0.1", optional: true},
       {:ex_cldr, "~> 2.18", optional: true},
       {:gettext, "~> 0.13", optional: true}

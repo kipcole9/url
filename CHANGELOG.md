@@ -1,3 +1,13 @@
+# Changelog for URL v1.3.1
+
+This is the changelog for URL version 1.3.1 released on May 12th, 2021.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+
+### Enhancements
+
+* Updates `nimble_parsec` dependency to `~> 1.0`. Thanks to @ghry5
+
+* Make `ex_doc` available only in `:dev` and `:release`
+
 # Changelog for URL v1.3.0
 
 This is the changelog for URL version 1.3.0 released on November 1st.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
