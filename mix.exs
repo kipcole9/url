@@ -1,6 +1,7 @@
 defmodule Url.MixProject do
   use Mix.Project
 
+  @source_url "https://github.com/kipcole9/url"
   @version "1.3.1"
 
   def project do
@@ -9,7 +10,6 @@ defmodule Url.MixProject do
       version: @version,
       elixir: "~> 1.5",
       name: "URL",
-      source_url: "https://github.com/kipcole9/url",
       docs: docs(),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -29,7 +29,7 @@ defmodule Url.MixProject do
 
   defp description do
     """
-    Functions to parse URLs incuding scheme-specific
+    Functions to parse URLs including scheme-specific
     URLs such as `tel`, `data`, `geo`, `uuid` and `mailto`.
     Modelled on the URI module.
     """
@@ -55,7 +55,7 @@ defmodule Url.MixProject do
   defp package do
     [
       maintainers: ["Kip Cole"],
-      licenses: ["Apache 2.0"],
+      licenses: ["Apache-2.0"],
       links: links(),
       files: [
         "lib",
@@ -63,28 +63,30 @@ defmodule Url.MixProject do
         "mix.exs",
         "README*",
         "CHANGELOG*",
-        "LICENSE*",
+        "LICENSE*"
       ]
     ]
   end
 
   def links do
     %{
-      "GitHub" => "https://github.com/kipcole9/url",
-      "Readme" => "https://github.com/kipcole9/url/blob/v#{@version}/README.md",
-      "Changelog" => "https://github.com/kipcole9/url/blob/v#{@version}/CHANGELOG.md"
+      "GitHub" => @source_url,
+      "Readme" => "#{@source_url}/blob/v#{@version}/README.md",
+      "Changelog" => "#{@source_url}/blob/v#{@version}/CHANGELOG.md"
     }
   end
 
   def docs do
     [
-      source_ref: "v#{@version}",
       main: "readme",
       extras: [
         "README.md",
         "LICENSE.md",
         "CHANGELOG.md"
       ],
+      source_url: @source_url,
+      source_ref: "v#{@version}",
+      formatters: ["html"]
     ]
   end
 

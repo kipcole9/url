@@ -1,6 +1,7 @@
 # Getting Started
+
 [![Hex pm](http://img.shields.io/hexpm/v/ex_url.svg?style=flat)](https://hex.pm/packages/ex_url)
-[![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://github.com/kipcole9/url/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://github.com/kipcole9/url/blob/master/LICENSE.md)
 
 ## Overview
 
@@ -154,7 +155,7 @@ iex> URL.parse "uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6;a=b"
 ```
 ## Configuration
 
-Configure `ex_url` in `mix.exs`:
+Configure `:ex_url` in `mix.exs`:
 ```elixir
   defp deps do
     [
@@ -186,3 +187,14 @@ Optional configuration in `mix.exs`:
   end
 ```
 
+## Copyright and License
+
+Copyright 2018 Kip Cole
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in
+compliance with the License. You may obtain a copy of the License at [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0).
+
+Unless required by applicable law or agreed to in writing, software distributed under the License
+is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+implied. See the License for the specific language governing permissions and limitations under the
+License.

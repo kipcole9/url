@@ -83,7 +83,7 @@ defmodule URL.ParseHelpers.Core do
   @doc false
   def hex_digit do
     ascii_string([?0..?9, ?a..?f, ?A..?F], 1)
-    |> label("a hexidecimal digit")
+    |> label("a hexadecimal digit")
   end
 
   @doc false
@@ -101,7 +101,7 @@ defmodule URL.ParseHelpers.Core do
   @doc false
   def hex_string do
     ascii_string([?a..?f, ?A..?F, ?0..?9], min: 1)
-    |> label("a hexidecimal digit")
+    |> label("a hexadecimal digit")
   end
 
   @doc false
