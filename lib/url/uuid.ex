@@ -35,8 +35,8 @@ defmodule URL.UUID do
   end
 
   def parse(%URI{scheme: "urn", path: path}) do
-    case URL.parse(path) do
-      %URL{parsed_path: parsed_path} -> parsed_path
+    case URL.new(path) do
+      {:ok, %URL{parsed_path: parsed_path}} -> parsed_path
       other -> other
     end
   end

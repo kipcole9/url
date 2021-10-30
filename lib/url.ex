@@ -50,6 +50,105 @@ defmodule URL do
   has the same shape as Elixir's %URI{} with the
   addition of the `parsed_path` key.
 
+  ## Arguments
+
+  * `url` is a binary representation of a URL
+
+  ## Returns
+
+  * `{:ok, URL.t()}` or
+
+  * `{:error, reason}`
+
+  ## Example
+
+    iex> URL.new("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
+    {:ok,
+      %URL{
+        authority: nil,
+        fragment: nil,
+        host: nil,
+        parsed_path: %URL.Geo{
+          alt: 3.4,
+          lat: 48.198634,
+          lng: -16.371648,
+          params: %{"crs" => "wgs84", "u" => 40.0}
+        },
+        path: "48.198634,-16.371648,3.4;crs=wgs84;u=40.0",
+        port: nil,
+        query: nil,
+        scheme: "geo",
+        userinfo: nil
+      }
+    }
+
+  """
+  @spec new(url :: binary()) :: {:ok, __MODULE__.t()} | {:error, String.t()}
+  def new(url) when is_binary(url) do
+    with {:ok, parsed} <- uri_new(url) do
+      {:ok, parse_scheme(parsed) |> merge_uri()}
+    end
+  end
+
+  @doc """
+  Parses a url and returns a %URL{} struct that
+  has the same shape as Elixir's %URI{} with the
+  addition of the `parsed_path` key.
+
+  ## Arguments
+
+  * `url` is a binary representation of a URL
+
+  ## Returns
+
+  * `URL.t()` or
+
+  * raises an exception
+
+  ## Example
+
+    iex> URL.new!("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
+    %URL{
+      authority: nil,
+      fragment: nil,
+      host: nil,
+      parsed_path: %URL.Geo{
+        alt: 3.4,
+        lat: 48.198634,
+        lng: -16.371648,
+        params: %{"crs" => "wgs84", "u" => 40.0}
+      },
+      path: "48.198634,-16.371648,3.4;crs=wgs84;u=40.0",
+      port: nil,
+      query: nil,
+      scheme: "geo",
+      userinfo: nil
+    }
+
+  """
+  @spec new!(url :: binary()) :: __MODULE__.t() | no_return()
+  def new!(url) when is_binary(url) do
+    case new(url) do
+      {:ok, parsed} -> parsed
+      {:error, part} -> raise URI.Error, reason: :invalid_uri, action: "parse", part: part
+    end
+  end
+
+  @doc """
+  Parses a url and returns a %URL{} struct that
+  has the same shape as Elixir's %URI{} with the
+  addition of the `parsed_path` key.
+
+  ## Arguments
+
+  * `url` is a binary representation of a URL
+
+  ## Returns
+
+  * `URL.t()` or
+
+  * `{:error, reason}`
+
   ## Example
 
     iex> URL.parse("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
@@ -71,11 +170,12 @@ defmodule URL do
     }
 
   """
+  @doc deprecated: "Use new/1 instead"
   @spec parse(url :: binary()) :: __MODULE__.t()
   def parse(url) when is_binary(url) do
     url
-    |> parse_scheme
-    |> merge_uri
+    |> parse_scheme()
+    |> merge_uri()
   end
 
   @doc """
@@ -98,7 +198,7 @@ defmodule URL do
       }
 
       iex> mailto = "mailto:user@%E7%B4%8D%E8%B1%86.example.org?subject=Test&body=NATTO"
-      iex> URL.parse(mailto) |> URL.parse_query_string
+      iex> URL.new!(mailto) |> URL.parse_query_string
       %{"body" => "NATTO", "subject" => "Test"}
 
   """
@@ -162,5 +262,19 @@ defmodule URL do
 
   def trim(other) do
     other
+  end
+
+  if Code.ensure_loaded?(URI) && function_exported?(URI, :new, 1) do
+    def uri_new(uri) do
+      URI.new(uri)
+    end
+  else
+    def uri_new(uri) do
+      if String.contains?(uri, " ") do
+        {:error, "spaces in URL"}
+      else
+        {:ok, URI.parse(uri) |> Map.put(:authority, nil)}
+      end
+    end
   end
 end

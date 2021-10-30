@@ -2,13 +2,13 @@ defmodule Url.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/kipcole9/url"
-  @version "1.3.1"
+  @version "1.4.0"
 
   def project do
     [
       app: :ex_url,
       version: @version,
-      elixir: "~> 1.5",
+      elixir: "~> 1.10",
       name: "URL",
       docs: docs(),
       build_embedded: Mix.env() == :prod,
@@ -21,7 +21,7 @@ defmodule Url.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       dialyzer: [
         ignore_warnings: ".dialyzer_ignore_warnings",
-        plt_add_apps: ~w(gettext inets jason mix poison plug)a
+        plt_add_apps: ~w(gettext inets jason mix ex_cldr ex_phone_number)a
       ],
       compilers: Mix.compilers()
     ]
@@ -48,7 +48,8 @@ defmodule Url.MixProject do
       {:ex_doc, "~> 0.18", only: [:dev, :release], runtime: false},
       {:ex_phone_number, "~> 0.1", optional: true},
       {:ex_cldr, "~> 2.18", optional: true},
-      {:gettext, "~> 0.13", optional: true}
+      {:gettext, "~> 0.13", optional: true},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false, optional: true}
     ]
   end
 

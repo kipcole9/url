@@ -1,6 +1,20 @@
-# Changelog for URL v1.3.1
+# Changelog
 
-This is the changelog for URL version 1.3.1 released on May 12th, 2021.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+## URL v1.4.0
+
+This is the changelog for URL version 1.4.0 released on October 30th, 2021.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
+
+### Deprecations
+
+* Soft deprecated `URL.parse/1` in line with Elixir 1.13's deprecation of `URI.parse/1`
+
+### Enhancements
+
+* Add `URL.new/1` and `URL.new!/1` in line with the preferred API in Elixir 1.13
+
+## URL v1.3.1
+
+This is the changelog for URL version 1.3.1 released on May 12th, 2021.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
 
 ### Enhancements
 
@@ -8,9 +22,9 @@ This is the changelog for URL version 1.3.1 released on May 12th, 2021.  For old
 
 * Make `ex_doc` available only in `:dev` and `:release`
 
-# Changelog for URL v1.3.0
+## URL v1.3.0
 
-This is the changelog for URL version 1.3.0 released on November 1st.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+This is the changelog for URL version 1.3.0 released on November 1st.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
 
 ### Enhancements
 
@@ -22,25 +36,25 @@ This is the changelog for URL version 1.3.0 released on November 1st.  For older
 
 * Fix error resulting from inconsistent use of territories as atoms and strings
 
-# Changelog for URL v1.2.0
+## URL v1.2.0
 
-This is the changelog for URL version 1.2.0 released on January 23rd, 2020.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+This is the changelog for URL version 1.2.0 released on January 23rd, 2020.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
 
 ### Enhancements
 
 * Executes `String.trim/1` on parsed elements of URI's so that "https://     google.fr" will return "google.fr" as the host, not "    google.fr".
 
-# Changelog for URL v1.1.0
+## URL v1.1.0
 
-This is the changelog for URL version 1.1.0 released on April 7th, 2019.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+This is the changelog for URL version 1.1.0 released on April 7th, 2019.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
 
 ### Enhancements
 
 * Update to `NimbleParsec` version 0.5
 
-# Changelog for URL v1.0.0
+## URL v1.0.0
 
-This is the changelog for URL version 1.0.0 released on November 25th, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+This is the changelog for URL version 1.0.0 released on November 25th, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
 
 ### Enhancements
 
@@ -48,17 +62,17 @@ This is the changelog for URL version 1.0.0 released on November 25th, 2018.  Fo
 
 * Add `URL.parse_query_string/1`
 
-# Changelog for URL v0.4.0
+## URL v0.4.0
 
-This is the changelog for URL version 0.4.0 released on October 18th, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+This is the changelog for URL version 0.4.0 released on October 18th, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
 
 ### Enhancements
 
 * Adds support for the `uuid` URL type.  See `URL.UUID`
 
-# Changelog for URL v0.3.0
+## URL v0.3.0
 
-This is the changelog for URL version 0.3.0 released on October 16th, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+This is the changelog for URL version 0.3.0 released on October 16th, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
 
 ### Enhancements
 
@@ -68,9 +82,9 @@ This is the changelog for URL version 0.3.0 released on October 16th, 2018.  For
 
 * Now correctly uses the `phone-context` parameter when formatting a telelphone number in a `tel` URL.
 
-# Changelog for URL v0.2.0
+## URL v0.2.0
 
-This is the changelog for URL version 0.2.0 released on October 13th, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+This is the changelog for URL version 0.2.0 released on October 13th, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
 
 ### Enhancements
 
@@ -78,9 +92,9 @@ This is the changelog for URL version 0.2.0 released on October 13th, 2018.  For
 
 * Make several functions private including the `defparsec` definitions
 
-# Changelog for URL v0.1.0
+## URL v0.1.0
 
-This is the changelog for URL version 0.1.0 released on October 13th, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/cldr/tags)
+This is the changelog for URL version 0.1.0 released on October 13th, 2018.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
 
 ### Enhancements
 

@@ -13,7 +13,7 @@
 * [uuid](https://tools.ietf.org/html/draft-kindel-uuid-uri-00)
 * and [tel](https://tools.ietf.org/html/rfc3966)
 
-The basic API is `URL.parse/1`.  The function `URL.to_string/1` is delegated to the URI module.
+The basic API is `URL.new/1`.  The function `URL.to_string/1` is delegated to the URI module.
 
 Of course these are really URI's, not URL's but its a reasonable choice of name
 given that [WHATWG](https://en.wikipedia.org/wiki/WHATWG) prefers URL over URI:
@@ -27,130 +27,143 @@ given that [WHATWG](https://en.wikipedia.org/wiki/WHATWG) prefers URL over URI:
 
 ### Parse a `geo` URL:
 ```elixir
-iex> URL.parse("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
-%URL{
-  authority: nil,
-  fragment: nil,
-  host: nil,
-  parsed_path: %URL.Geo{
-    alt: 3.4,
-    lat: 48.198634,
-    lng: -16.371648,
-    params: %{"crs" => "wgs84", "u" => 40.0}
-  },
-  path: "48.198634,-16.371648,3.4;crs=wgs84;u=40.0",
-  port: nil,
-  query: nil,
-  scheme: "geo",
-  userinfo: nil
+iex> URL.new("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
+{:ok,
+  %URL{
+    authority: nil,
+    fragment: nil,
+    host: nil,
+    parsed_path: %URL.Geo{
+      alt: 3.4,
+      lat: 48.198634,
+      lng: -16.371648,
+      params: %{"crs" => "wgs84", "u" => 40.0}
+    },
+    path: "48.198634,-16.371648,3.4;crs=wgs84;u=40.0",
+    port: nil,
+    query: nil,
+    scheme: "geo",
+    userinfo: nil
+  }
 }
 ```
 ### Parse a `tel` URL:
 ```elixir
-iex> URL.parse("tel:+61-0407-555-987")
-%URL{
-  authority: nil,
-  fragment: nil,
-  host: nil,
-  parsed_path: %URL.Tel{params: %{}, tel: "+61 407 555 987"},
-  path: "+61-0407-555-987",
-  port: nil,
-  query: nil,
-  scheme: "tel",
-  userinfo: nil
+iex> URL.new("tel:+61-0407-555-987")
+{:ok,
+  %URL{
+    authority: nil,
+    fragment: nil,
+    host: nil,
+    parsed_path: %URL.Tel{params: %{}, tel: "+61 407 555 987"},
+    path: "+61-0407-555-987",
+    port: nil,
+    query: nil,
+    scheme: "tel",
+    userinfo: nil
+  }
 }
-
 # When the parameter "phone-context" is also a valid number then it is prepended before formatting
-iex> tel = URL.parse "tel:0407-555-987;phone-context=+61"
-%URL{
-  authority: nil,
-  fragment: nil,
-  host: nil,
-  parsed_path: %URL.Tel{
-    params: %{"phone-context" => "+61"},
-    tel: "+61 407 555 987"
-  },
-  path: "0407-555-987;phone-context=+61",
-  port: nil,
-  query: nil,
-  scheme: "tel",
-  userinfo: nil
+iex> tel = URL.new "tel:0407-555-987;phone-context=+61"
+{:ok,
+  %URL{
+    authority: nil,
+    fragment: nil,
+    host: nil,
+    parsed_path: %URL.Tel{
+      params: %{"phone-context" => "+61"},
+      tel: "+61 407 555 987"
+    },
+    path: "0407-555-987;phone-context=+61",
+    port: nil,
+    query: nil,
+    scheme: "tel",
+    userinfo: nil
+  }
 }
 ```
 ### Parse a `data` URL:
 This first example shows the treatment of data that is `base64` encoded.  It is decoded by `URL.Data.parse/1`.
 ```elixir
-iex> URL.parse("data:;base64,SGVsbG8gV29ybGQh")
-%URL{
-  authority: nil,
-  fragment: nil,
-  host: nil,
-  parsed_path: %URL.Data{
-    data: "Hello World!",
-    mediatype: "text/plain",
-    params: %{"encoding" => "base64"}
-  },
-  path: ";base64,SGVsbG8gV29ybGQh",
-  port: nil,
-  query: nil,
-  scheme: "data",
-  userinfo: nil
+iex> URL.new("data:;base64,SGVsbG8gV29ybGQh")
+{:ok,
+  %URL{
+    authority: nil,
+    fragment: nil,
+    host: nil,
+    parsed_path: %URL.Data{
+      data: "Hello World!",
+      mediatype: "text/plain",
+      params: %{"encoding" => "base64"}
+    },
+    path: ";base64,SGVsbG8gV29ybGQh",
+    port: nil,
+    query: nil,
+    scheme: "data",
+    userinfo: nil
+  }
 }
 ```
 This second example shows the treatment of data that is not marked as `base64` encoded.  In this case it is considered to be `percent-encoded`.  It is also decoded during parsing.
 ```elixir
-iex> URL.parse("data:,Hello%20World%21")
-%URL{
-  authority: nil,
-  fragment: nil,
-  host: nil,
-  parsed_path: %URL.Data{
-    data: "Hello World!",
-    mediatype: "text/plain",
-    params: %{}
-  },
-  path: ",Hello%20World%21",
-  port: nil,
-  query: nil,
-  scheme: "data",
-  userinfo: nil
+iex> URL.new("data:,Hello%20World%21")
+{:ok,
+  %URL{
+    authority: nil,
+    fragment: nil,
+    host: nil,
+    parsed_path: %URL.Data{
+      data: "Hello World!",
+      mediatype: "text/plain",
+      params: %{}
+    },
+    path: ",Hello%20World%21",
+    port: nil,
+    query: nil,
+    scheme: "data",
+    userinfo: nil
+  }
 }
 ```
 ### Parse a `mailto` URL
 A `mailto` URL will be parsed and percent encoding will be decoded.  Note that [RFC2047 encoded-words](https://tools.ietf.org/html/rfc2047) is not currently supported.
 ```elixir
-iex> URL.parse "mailto:infobot@example.com?subject=current-issue"
-%URL{
-  authority: nil,
-  fragment: nil,
-  host: nil,
-  parsed_path: %URL.Mailto{
-    params: %{"subject" => "current-issue"},
-    to: ["infobot@example.com"]
-  },
-  path: "infobot@example.com",
-  port: nil,
-  query: "subject=current-issue",
-  scheme: "mailto",
-  userinfo: nil
+iex> URL.new("mailto:infobot@example.com?subject=current-issue")
+{:ok,
+  %URL{
+    authority: nil,
+    fragment: nil,
+    host: nil,
+    parsed_path: %URL.Mailto{
+      params: %{"subject" => "current-issue"},
+      to: ["infobot@example.com"]
+    },
+    path: "infobot@example.com",
+    port: nil,
+    query: "subject=current-issue",
+    scheme: "mailto",
+    userinfo: nil
+  }
 }
 ```
 ### Parse a `uuid` URL
 ```elixir
-iex> URL.parse "uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6;a=b"
-%URL{
-  authority: nil,
-  fragment: nil,
-  host: nil,
-  parsed_path: %URL.UUID{
-    params: %{"a" => "b"},
-    uuid: "f81d4fae-7dec-11d0-a765-00a0c91e6bf6"
-  },
-  path: "f81d4fae-7dec-11d0-a765-00a0c91e6bf6;a=b",
-  port: nil,
-  query: nil,
-  scheme: "uuid",
-  userinfo: nil
+iex> URL.new("uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6;a=b")
+{:ok,
+  %URL{
+    authority: nil,
+    fragment: nil,
+    host: nil,
+    parsed_path: %URL.UUID{
+      params: %{"a" => "b"},
+      uuid: "f81d4fae-7dec-11d0-a765-00a0c91e6bf6"
+    },
+    path: "f81d4fae-7dec-11d0-a765-00a0c91e6bf6;a=b",
+    port: nil,
+    query: nil,
+    scheme: "uuid",
+    userinfo: nil
+  }
 }
 ```
 ## Configuration
@@ -159,7 +172,7 @@ Configure `:ex_url` in `mix.exs`:
 ```elixir
   defp deps do
     [
-      {:ex_url, "~> 0.3"},
+      {:ex_url, "~> 0.4"},
       ...
     ]
   end
@@ -189,12 +202,6 @@ Optional configuration in `mix.exs`:
 
 ## Copyright and License
 
-Copyright 2018 Kip Cole
+Copyright 2018-2021 Kip Cole
 
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in
-compliance with the License. You may obtain a copy of the License at [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0).
-
-Unless required by applicable law or agreed to in writing, software distributed under the License
-is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-implied. See the License for the specific language governing permissions and limitations under the
-License.
+See LICENCE.md for the licence terms.
