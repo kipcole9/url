@@ -44,10 +44,10 @@ defmodule Url.MixProject do
   defp deps do
     [
       {:nimble_parsec, "~> 1.0"},
-      {:jason, "~> 1.0"},
       {:ex_doc, "~> 0.18", only: [:dev, :release], runtime: false},
       {:ex_phone_number, "~> 0.1", optional: true},
       {:ex_cldr, "~> 2.18", optional: true},
+      {:jason, "~> 1.0", optional: true},
       {:gettext, "~> 0.13", optional: true},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false, optional: true}
     ]

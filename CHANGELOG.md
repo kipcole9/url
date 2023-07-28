@@ -4,9 +4,13 @@
 
 This is the changelog for URL version 1.5.0 released on July 28th, 2023.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
 
+`URL` version 1.5.0 is supported on Elixir 1.11 and later only.
+
 ### Bug Fixes
 
 * Change to `import Config`, not `import Mix.Config`
+
+* Make `Jason` dependency optional.
 
 ## URL v1.4.0
 
