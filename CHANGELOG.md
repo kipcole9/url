@@ -1,5 +1,13 @@
 # Changelog
 
+## URL v1.5.0
+
+This is the changelog for URL version 1.5.0 released on July 28th, 2023.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
+
+### Bug Fixes
+
+* Change to `import Config`, not `import Mix.Config`
+
 ## URL v1.4.0
 
 This is the changelog for URL version 1.4.0 released on October 30th, 2021.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)

@@ -2,13 +2,13 @@ defmodule Url.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/kipcole9/url"
-  @version "1.4.0"
+  @version "1.5.0"
 
   def project do
     [
       app: :ex_url,
       version: @version,
-      elixir: "~> 1.10",
+      elixir: "~> 1.11",
       name: "URL",
       docs: docs(),
       build_embedded: Mix.env() == :prod,
