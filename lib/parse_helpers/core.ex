@@ -3,8 +3,8 @@ defmodule URL.ParseHelpers.Core do
 
   import NimbleParsec
 
-  @cr 0x0d
-  @lf 0x0a
+  @cr 0x0D
+  @lf 0x0A
 
   # Allow NL line ends for simpler compatibility
   def crlf do
@@ -186,7 +186,9 @@ defmodule URL.ParseHelpers.Core do
   #                       "a" | "b" | "c" | "d" | "e" | "f"
   @doc false
   def escaped do
-    ascii_string([?%], 1) |> concat(hex_digit()) |> concat(hex_digit())
+    ascii_string([?%], 1)
+    |> concat(hex_digit())
+    |> concat(hex_digit())
     |> reduce({Enum, :join, []})
   end
 
@@ -199,9 +201,9 @@ defmodule URL.ParseHelpers.Core do
   @doc false
   def anycase_string(string) do
     string
-    |> String.upcase
-    |> String.to_charlist
-    |> Enum.reverse
+    |> String.upcase()
+    |> String.to_charlist()
+    |> Enum.reverse()
     |> char_piper
     |> reduce({List, :to_string, []})
   end
@@ -315,16 +317,18 @@ defmodule URL.ParseHelpers.Core do
   #   mediatype  := [ type "/" subtype ] *( ";" parameter )
   @doc false
   def mediatype do
-    optional(token()
-    |> string("/")
-    |> concat(token())
-    |> reduce({Enum, :join, []})
-    |> unwrap_and_tag(:mediatype))
+    optional(
+      token()
+      |> string("/")
+      |> concat(token())
+      |> reduce({Enum, :join, []})
+      |> unwrap_and_tag(:mediatype)
+    )
   end
 
   @non_ctrls Enum.to_list(32..126)
   @tspecials [?(, ?), ?<, ?>, ?@, ?,, ?;, ?:, ?\\, ?\", ?/, ?[, ?], ??, ?=, 0x20]
-  @token MapSet.difference(MapSet.new(@non_ctrls), MapSet.new(@tspecials)) |> MapSet.to_list
+  @token MapSet.difference(MapSet.new(@non_ctrls), MapSet.new(@tspecials)) |> MapSet.to_list()
   @doc false
   def token do
     ascii_string(@token, min: 1)
@@ -351,14 +355,14 @@ defmodule URL.ParseHelpers.Core do
   #      ; ALSO ALLOW &NBSP 0xa0 since Apple Contacts generates it
   @doc false
   def safe_string do
-    ascii_string([0x20, 0x09, ?!, 0x23..0x39, 0x3c..0x7e], min: 1)
+    ascii_string([0x20, 0x09, ?!, 0x23..0x39, 0x3C..0x7E], min: 1)
   end
 
   #    QSAFE-CHAR = WSP / "!" / %x23-7E / NON-ASCII
   #      ; Any character except CTLs, DQUOTE
   @doc false
   def qsafe_string do
-    ascii_string([0x20, 0x09, ?!, 0x23..0x7e], min: 1)
+    ascii_string([0x20, 0x09, ?!, 0x23..0x7E], min: 1)
   end
 
   @doc false
@@ -372,13 +376,13 @@ defmodule URL.ParseHelpers.Core do
   end
 
   def unescape(""), do: ""
-  def unescape(<< "\\n", rest :: binary>>), do: "\n" <> unescape(rest)
-  def unescape(<< "\\r", rest :: binary>>), do: "\r" <> unescape(rest)
-  def unescape(<< "\\t", rest :: binary>>), do: "\t" <> unescape(rest)
-  def unescape(<< "\\,", rest :: binary>>), do: "," <> unescape(rest)
-  def unescape(<< "\\;", rest :: binary>>), do: ";" <> unescape(rest)
-  def unescape(<< "\\\\", rest :: binary>>), do: "\\" <> unescape(rest)
-  def unescape(<< c :: binary-size(1), rest :: binary>>), do: c <> unescape(rest)
+  def unescape(<<"\\n", rest::binary>>), do: "\n" <> unescape(rest)
+  def unescape(<<"\\r", rest::binary>>), do: "\r" <> unescape(rest)
+  def unescape(<<"\\t", rest::binary>>), do: "\t" <> unescape(rest)
+  def unescape(<<"\\,", rest::binary>>), do: "," <> unescape(rest)
+  def unescape(<<"\\;", rest::binary>>), do: ";" <> unescape(rest)
+  def unescape(<<"\\\\", rest::binary>>), do: "\\" <> unescape(rest)
+  def unescape(<<c::binary-size(1), rest::binary>>), do: c <> unescape(rest)
   def unescape(values), do: values
 
   @doc false

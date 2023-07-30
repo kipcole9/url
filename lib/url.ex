@@ -11,31 +11,31 @@ defmodule URL do
   """
   @type uri_type :: nil | URL.Data.t() | URL.Geo.t() | URL.Tel.t() | URL.UUID.t() | URL.Mailto.t()
   defstruct scheme: nil,
-    path: nil,
-    query: nil,
-    fragment: nil,
-    authority: nil,
-    userinfo: nil,
-    host: nil,
-    port: nil,
-    parsed_path: nil
+            path: nil,
+            query: nil,
+            fragment: nil,
+            authority: nil,
+            userinfo: nil,
+            host: nil,
+            port: nil,
+            parsed_path: nil
 
   @type t() :: %__MODULE__{
-    authority: nil | binary(),
-    fragment: nil | binary(),
-    host: nil | binary(),
-    path: nil | binary(),
-    port: nil | :inet.port_number(),
-    query: nil | binary(),
-    scheme: nil | binary(),
-    userinfo: nil | binary(),
-    parsed_path: uri_type()
-  }
+          authority: nil | binary(),
+          fragment: nil | binary(),
+          host: nil | binary(),
+          path: nil | binary(),
+          port: nil | :inet.port_number(),
+          query: nil | binary(),
+          scheme: nil | binary(),
+          userinfo: nil | binary(),
+          parsed_path: uri_type()
+        }
 
   @supported_schemes %{
     "tel" => URL.Tel,
     "data" => URL.Data,
-    "geo" =>  URL.Geo,
+    "geo" => URL.Geo,
     "mailto" => URL.Mailto,
     "uuid" => URL.UUID,
     "urn" => URL.UUID
@@ -142,8 +142,10 @@ defmodule URL do
     case new(url) do
       {:ok, parsed} ->
         parsed
+
       {:error, {URL.Parser.ParseError = exception, reason}} ->
         raise(exception, reason)
+
       {:error, {URI.Error = exception, reason}} ->
         raise(exception, action: "parse", reason: "invalid_uri", part: reason)
     end
@@ -237,7 +239,7 @@ defmodule URL do
   end
 
   defparsec :parse_query,
-    optional(hfields())
+            optional(hfields())
 
   defdelegate to_string(url), to: URI
 

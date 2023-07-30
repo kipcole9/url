@@ -7,9 +7,9 @@ defmodule URL.UUID do
   alias URL.ParseHelpers.Params
 
   @type t() :: %__MODULE__{
-    uuid: binary(),
-    params: map()
-  }
+          uuid: binary(),
+          params: map()
+        }
 
   defstruct uuid: nil, params: %{}
 
@@ -44,8 +44,9 @@ defmodule URL.UUID do
     end
   end
 
-  defparsecp :parse_uuid,
+  defparsecp(
+    :parse_uuid,
     uuid()
     |> concat(params())
-
+  )
 end

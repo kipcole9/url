@@ -9,9 +9,9 @@ defmodule URL.Tel do
   defstruct tel: nil, params: %{}
 
   @type t() :: %__MODULE__{
-    tel: String.t(),
-    params: map()
-  }
+          tel: String.t(),
+          params: map()
+        }
 
   @default_territory "US"
 
@@ -40,7 +40,6 @@ defmodule URL.Tel do
     end
   end
 
-
   if Code.ensure_loaded?(ExPhoneNumber) do
     defp parse_phone_number(number, territory \\ get_territory()) do
       territory = if unknown_territory?(territory), do: @default_territory, else: territory
@@ -53,6 +52,7 @@ defmodule URL.Tel do
 
     defp format(%__MODULE__{tel: tel} = url, format \\ :international) do
       phone_context = phone_context(url.params)
+
       case parse_phone_number(phone_context <> tel) do
         {:ok, tel} -> ExPhoneNumber.format(tel, format)
         other -> other
@@ -111,6 +111,8 @@ defmodule URL.Tel do
     end
   end
 
-  defparsecp :parse_tel,
+  defparsecp(
+    :parse_tel,
     tel() |> concat(params())
+  )
 end

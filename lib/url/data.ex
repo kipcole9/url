@@ -10,10 +10,10 @@ defmodule URL.Data do
   defstruct mediatype: @default_mediatype, params: %{}, data: ""
 
   @type t() :: %__MODULE__{
-    mediatype: binary(),
-    params: map(),
-    data: String.t() | {:error, String.t()}
-  }
+          mediatype: binary(),
+          params: map(),
+          data: String.t() | {:error, String.t()}
+        }
 
   @doc """
   Parse a URI with the `:scheme` of "data"
@@ -56,9 +56,11 @@ defmodule URL.Data do
     Map.put(data, :data, URI.decode(data.data))
   end
 
-  defparsecp :parse_data,
-      optional(mediatype())
-      |> concat(params())
-      |> ignore(comma())
-      |> concat(data())
+  defparsecp(
+    :parse_data,
+    optional(mediatype())
+    |> concat(params())
+    |> ignore(comma())
+    |> concat(data())
+  )
 end

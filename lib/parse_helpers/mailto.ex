@@ -38,8 +38,9 @@ defmodule URL.ParseHelpers.Mailto do
         x when is_integer(x) -> List.to_string([x])
         x -> x
       end)
-      |> Enum.reverse
-      |> Enum.join
+      |> Enum.reverse()
+      |> Enum.join()
+
     {[domain], context}
   end
 
@@ -105,9 +106,33 @@ defmodule URL.ParseHelpers.Mailto do
 
   @doc false
   def atext do
-    ascii_string([?0..?9, ?a..?z, ?A..?Z, ?!, ?#, ?$,
-            ?%, ?&, ?', ?*, ?+, ?-, ?/, ?=, ??,
-            ?^, ?_, ?`, ?(, ?|, ?), ?~], min: 1)
+    ascii_string(
+      [
+        ?0..?9,
+        ?a..?z,
+        ?A..?Z,
+        ?!,
+        ?#,
+        ?$,
+        ?%,
+        ?&,
+        ?',
+        ?*,
+        ?+,
+        ?-,
+        ?/,
+        ?=,
+        ??,
+        ?^,
+        ?_,
+        ?`,
+        ?(,
+        ?|,
+        ?),
+        ?~
+      ],
+      min: 1
+    )
   end
 
   @doc false

@@ -7,11 +7,11 @@ defmodule URL.Geo do
   alias URL.ParseHelpers.Params
 
   @type t() :: %__MODULE__{
-    lat: number(),
-    lng: number(),
-    alt: nil | number(),
-    params: map()
-  }
+          lat: number(),
+          lng: number(),
+          alt: nil | number(),
+          params: map()
+        }
 
   defstruct lat: 0.0, lng: 0.0, alt: nil, params: %{}
 
@@ -45,12 +45,17 @@ defmodule URL.Geo do
     end
   end
 
-  defparsecp :parse_geo,
-    number() |> unwrap_and_tag(:lat) |> label("lng")
+  defparsecp(
+    :parse_geo,
+    number()
+    |> unwrap_and_tag(:lat)
+    |> label("lng")
     |> ignore(comma())
-    |> concat(number() |> unwrap_and_tag(:lng)) |> label("lat")
-    |> optional(ignore(comma()) |> concat(number()) |> unwrap_and_tag(:alt)) |> label("alt")
+    |> concat(number() |> unwrap_and_tag(:lng))
+    |> label("lat")
+    |> optional(ignore(comma()) |> concat(number()) |> unwrap_and_tag(:alt))
+    |> label("alt")
     |> concat(params())
     |> label("geo data")
-
+  )
 end

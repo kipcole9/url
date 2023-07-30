@@ -7,9 +7,9 @@ defmodule URL.Mailto do
   alias URL.ParseHelpers.Params
 
   @type t() :: %__MODULE__{
-    to: [binary(), ...],
-    params: map()
-  }
+          to: [binary(), ...],
+          params: map()
+        }
 
   defstruct to: nil, params: %{}
 
@@ -38,7 +38,8 @@ defmodule URL.Mailto do
     end
   end
 
-  defparsecp :parse_mailto,
+  defparsecp(
+    :parse_mailto,
     optional(to())
-
+  )
 end
