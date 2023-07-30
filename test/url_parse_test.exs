@@ -95,7 +95,7 @@ defmodule Url.Parse.Test do
 
   test "parsing a url with spaces" do
     assert URL.parse("http://  thing.com/my_path ") ==
-      {:error, {URL.Parser.ParseError, "spaces in URL"}}
+      {:error, {URI.Error, "cannot parse due to reason invalid_uri: \":\""}}
   end
 
 end

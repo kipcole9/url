@@ -8,7 +8,7 @@ defmodule Url.MixProject do
     [
       app: :ex_url,
       version: @version,
-      elixir: "~> 1.11",
+      elixir: "~> 1.13",
       name: "URL",
       docs: docs(),
       build_embedded: Mix.env() == :prod,

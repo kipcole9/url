@@ -87,6 +87,11 @@ defmodule URL do
      {URL.Parser.ParseError,
       "expected an string of digits while processing lat inside alt inside geo data. Detected on line 1 at \\"-16.371648,3.4;crs=w\\" <> ..."}}
 
+    iex> URL.new "/invalid_greater_than_in_path/>"
+    {:error,
+     {URI.Error,
+      "cannot parse due to reason invalid_uri: \\">\\""}}
+
   """
   @spec new(url :: binary()) :: {:ok, __MODULE__.t()} | {:error, {module(), String.t()}}
   def new(url) when is_binary(url) do
@@ -135,8 +140,12 @@ defmodule URL do
   @spec new!(url :: binary()) :: __MODULE__.t() | no_return()
   def new!(url) when is_binary(url) do
     case new(url) do
-      {:ok, parsed} -> parsed
-      {:error, part} -> raise URI.Error, reason: :invalid_uri, action: "parse", part: part
+      {:ok, parsed} ->
+        parsed
+      {:error, {URL.Parser.ParseError = exception, reason}} ->
+        raise(exception, reason)
+      {:error, {URI.Error = exception, reason}} ->
+        raise(exception, action: "parse", reason: "invalid_uri", part: reason)
     end
   end
 
@@ -263,24 +272,15 @@ defmodule URL do
     other
   end
 
-  if Code.ensure_loaded?(URI) && function_exported?(URI, :new, 1) do
-    def uri_new(uri) do
-      if String.contains?(uri, " ") do
-        {:error, {URL.Parser.ParseError, "spaces in URL"}}
-      else
-        case URI.new(uri) do
-          {:error, reason} -> {:error, {URL.Parser.ParseError, reason}}
-          other -> other
-        end
-      end
+  def uri_new(uri) do
+    case URI.new(uri) do
+      {:error, reason} -> {:error, uri_error(reason)}
+      {:ok, uri} -> {:ok, uri}
     end
-  else
-    def uri_new(uri) do
-      if String.contains?(uri, " ") do
-        {:error, "spaces in URL"}
-      else
-        {:ok, URI.parse(uri) |> Map.put(:authority, nil)}
-      end
-    end
+  end
+
+  defp uri_error(part) do
+    message = URI.Error.message(%URI.Error{action: "parse", reason: "invalid_uri", part: part})
+    {URI.Error, message}
   end
 end

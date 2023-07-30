@@ -202,6 +202,6 @@ Optional configuration in `mix.exs`:
 
 ## Copyright and License
 
-Copyright 2018-2021 Kip Cole
+Copyright 2018-2023 Kip Cole
 
 See LICENCE.md for the licence terms.
