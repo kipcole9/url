@@ -185,7 +185,7 @@ defmodule URL do
   end
 
   @doc """
-  Parse a URL query string and percent decode.
+  Parse and percent decode a URL query string.
 
   ### Returns
 
@@ -195,7 +195,7 @@ defmodule URL do
 
   ### Examples
 
-      iex> URL.parse_query_string "url=http%3a%2f%2ffonzi.com%2f&name=Fonzi&mood=happy&coat=leather"
+      iex> URL.parse_query_string("url=http%3a%2f%2ffonzi.com%2f&name=Fonzi&mood=happy&coat=leather")
       %{
         "coat" => "leather",
         "mood" => "happy",
@@ -204,7 +204,7 @@ defmodule URL do
       }
 
       iex> mailto = "mailto:user@%E7%B4%8D%E8%B1%86.example.org?subject=Test&body=NATTO"
-      iex> URL.new!(mailto) |> URL.parse_query_string
+      iex> URL.new!(mailto) |> URL.parse_query_string()
       %{"body" => "NATTO", "subject" => "Test"}
 
   """
@@ -228,6 +228,7 @@ defmodule URL do
     {:ok, [%{}], "", %{}, {0, 0}, 0}
   end
 
+  @doc false
   defparsec :parse_query,
             optional(hfields())
 
