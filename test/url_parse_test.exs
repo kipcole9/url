@@ -8,7 +8,7 @@ defmodule Url.Parse.Test do
   doctest URL.Mailto
 
   test "parsing a tel url" do
-    assert URL.parse("tel:+610407555987") ==
+    assert URL.new("tel:+610407555987") ==
              {:ok,
               %URL{
                 authority: nil,
@@ -24,7 +24,7 @@ defmodule Url.Parse.Test do
   end
 
   test "parsing a geo url" do
-    assert URL.parse("GEO:48.198634,-16.371648,3.4;crs=wgs84;u=40.0") ==
+    assert URL.new("GEO:48.198634,-16.371648,3.4;crs=wgs84;u=40.0") ==
              {:ok,
               %URL{
                 authority: nil,
@@ -45,7 +45,7 @@ defmodule Url.Parse.Test do
   end
 
   test "parsing a data url that is base64 encoded" do
-    assert URL.parse("data:text/plain;base64,SGVsbG8gV29ybGQh") ==
+    assert URL.new("data:text/plain;base64,SGVsbG8gV29ybGQh") ==
              {:ok,
               %URL{
                 authority: nil,
@@ -65,7 +65,7 @@ defmodule Url.Parse.Test do
   end
 
   test "parsing a data url that is not base64 encoded" do
-    assert URL.parse("data:,Hello%20World%21") ==
+    assert URL.new("data:,Hello%20World%21") ==
              {:ok,
               %URL{
                 fragment: nil,
@@ -84,7 +84,7 @@ defmodule Url.Parse.Test do
   end
 
   test "parsing an http url" do
-    assert URL.parse("http://thing.com/my_path") ==
+    assert URL.new("http://thing.com/my_path") ==
              {:ok,
               %URL{
                 fragment: nil,
@@ -99,7 +99,7 @@ defmodule Url.Parse.Test do
   end
 
   test "parsing a url with spaces" do
-    assert URL.parse("http://  thing.com/my_path ") ==
+    assert URL.new("http://  thing.com/my_path ") ==
              {:error, {URI.Error, "cannot parse due to reason invalid_uri: \":\""}}
   end
 end

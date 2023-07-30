@@ -151,44 +151,8 @@ defmodule URL do
     end
   end
 
-  @doc """
-  Parses a url and returns a %URL{} struct that
-  has the same shape as Elixir's %URI{} with the
-  addition of the `parsed_path` key.
-
-  ## Arguments
-
-  * `url` is a binary representation of a URL.
-
-  ## Returns
-
-  * `{:ok, t:URL.t/0}` or
-
-  * `{:error, {exception, reason}}`
-
-  ## Example
-
-    iex> URL.parse("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
-    {:ok,
-     %URL{
-       scheme: "geo",
-       path: "48.198634,-16.371648,3.4;crs=wgs84;u=40.0",
-       query: nil,
-       fragment: nil,
-       authority: nil,
-       userinfo: nil,
-       host: nil,
-       port: nil,
-       parsed_path: %URL.Geo{
-         lat: 48.198634,
-         lng: -16.371648,
-         alt: 3.4,
-         params: %{"crs" => "wgs84", "u" => 40.0}
-       }
-     }}
-
-  """
-  @doc deprecated: "Use new/1 instead"
+  @doc false
+  @deprecated "Use new/1 instead"
   @spec parse(url :: binary()) :: {:ok, __MODULE__.t()} | {:error, {module(), String.t()}}
   def parse(url) when is_binary(url) do
     new(url)
