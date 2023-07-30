@@ -4,11 +4,15 @@
 
 This is the changelog for URL version 2.0.0 released on ______, 2023.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
 
-`URL` version 2.0.0 is supported on Elixir 1.11 and later only.
+**URL version 2.0.0 is supported on Elixir 1.13 and later only.**
 
 ### Breaking Change
 
 * `URL.new/1` now always returns a tuple of the form `{:ok, t:URL.t/0}` or `{:error, {module(), String.t()}}`. The previous versions embedded error tuples in the return structure making is too complex to determine if there was a parsing error on the path data.  This approach also makes it more straight forward to implement tests that return errors.
+
+### Deprecations
+
+* Hard deprecates `URL.parse/1`
 
 ## URL v1.5.0
 

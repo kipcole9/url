@@ -1,6 +1,6 @@
 defmodule URL do
   @moduledoc """
-  Functions for parsing URLs
+  Functions for parsing URLs.
 
   This module provides functions for parsing URLs. It is modelled on
   Elixir's `URI` module but will also parse scheme-specific URIs such
@@ -50,20 +50,75 @@ defmodule URL do
   has the same shape as Elixir's %URI{} with the
   addition of the `parsed_path` key.
 
-  ## Arguments
+  ### Arguments
 
-  * `url` is a binary representation of a URL
+  * `url` is a binary representation of a URL.
 
-  ## Returns
+  ### Returns
 
-  * `{:ok, t:URL.t/0}` or
+  * `{:ok, URL.t()}` or
 
-  * `{:error, {exception, reason}}`
+  * `{:error, {exception, reason}}`.
 
-  ## Example
+  ### Example
 
-    iex> URL.new("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
-    {:ok,
+      iex> URL.new("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
+      {:ok,
+        %URL{
+          authority: nil,
+          fragment: nil,
+          host: nil,
+          parsed_path: %URL.Geo{
+            alt: 3.4,
+            lat: 48.198634,
+            lng: -16.371648,
+            params: %{"crs" => "wgs84", "u" => 40.0}
+          },
+          path: "48.198634,-16.371648,3.4;crs=wgs84;u=40.0",
+          port: nil,
+          query: nil,
+          scheme: "geo",
+          userinfo: nil
+        }
+      }
+
+      iex> URL.new("geo:48.198634,--16.371648,3.4;crs=wgs84;u=40.0")
+      {:error,
+       {URL.Parser.ParseError,
+        "expected an string of digits while processing lat inside alt inside geo data. Detected on line 1 at \\"-16.371648,3.4;crs=w\\" <> ..."}}
+
+      iex> URL.new "/invalid_greater_than_in_path/>"
+      {:error,
+       {URI.Error,
+        "cannot parse due to reason invalid_uri: \\">\\""}}
+
+  """
+  @spec new(url :: binary()) :: {:ok, __MODULE__.t()} | {:error, {module(), String.t()}}
+  def new(url) when is_binary(url) do
+    with {:ok, uri} <- uri_new(url),
+         {:ok, scheme} <- parse_scheme(uri) do
+      {:ok, merge_uri(uri, scheme)}
+    end
+  end
+
+  @doc """
+  Parses a url and returns a %URL{} struct that
+  has the same shape as Elixir's %URI{} with the
+  addition of the `parsed_path` key.
+
+  ### Arguments
+
+  * `url` is a binary representation of a URL.
+
+  ### Returns
+
+  * `t:URL.t/0` or
+
+  * raises an exception.
+
+  ### Example
+
+      iex> URL.new!("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
       %URL{
         authority: nil,
         fragment: nil,
@@ -80,61 +135,6 @@ defmodule URL do
         scheme: "geo",
         userinfo: nil
       }
-    }
-
-    iex> URL.new("geo:48.198634,--16.371648,3.4;crs=wgs84;u=40.0")
-    {:error,
-     {URL.Parser.ParseError,
-      "expected an string of digits while processing lat inside alt inside geo data. Detected on line 1 at \\"-16.371648,3.4;crs=w\\" <> ..."}}
-
-    iex> URL.new "/invalid_greater_than_in_path/>"
-    {:error,
-     {URI.Error,
-      "cannot parse due to reason invalid_uri: \\">\\""}}
-
-  """
-  @spec new(url :: binary()) :: {:ok, __MODULE__.t()} | {:error, {module(), String.t()}}
-  def new(url) when is_binary(url) do
-    with {:ok, uri} <- uri_new(url),
-         {:ok, scheme} <- parse_scheme(uri) do
-      {:ok, merge_uri(uri, scheme)}
-    end
-  end
-
-  @doc """
-  Parses a url and returns a %URL{} struct that
-  has the same shape as Elixir's %URI{} with the
-  addition of the `parsed_path` key.
-
-  ## Arguments
-
-  * `url` is a binary representation of a URL
-
-  ## Returns
-
-  * `t:URL.t/0` or
-
-  * raises an exception
-
-  ## Example
-
-    iex> URL.new!("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
-    %URL{
-      authority: nil,
-      fragment: nil,
-      host: nil,
-      parsed_path: %URL.Geo{
-        alt: 3.4,
-        lat: 48.198634,
-        lng: -16.371648,
-        params: %{"crs" => "wgs84", "u" => 40.0}
-      },
-      path: "48.198634,-16.371648,3.4;crs=wgs84;u=40.0",
-      port: nil,
-      query: nil,
-      scheme: "geo",
-      userinfo: nil
-    }
 
   """
   @spec new!(url :: binary()) :: __MODULE__.t() | no_return()
@@ -151,6 +151,32 @@ defmodule URL do
     end
   end
 
+  @doc """
+  Returns the string representation of the given URL struct (t:t/0).
+
+  This function delegates to `URI.to_string/1`.
+
+  ### Arguments
+
+  * `url` is any `t:URL.t/0`.
+
+  ### Returns
+
+  * a string representation of the URL.
+
+  ### Examples
+
+      iex> {:ok, geo_url} = URL.new("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
+      iex> URL.to_string(geo_url)
+      "geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0"
+
+  """
+  @dialyzer {:nowarn_function, {:to_string, 1}}
+  @spec to_string(t()) :: String.t()
+  def to_string(%URL{} = url) do
+    URI.to_string(url)
+  end
+
   @doc false
   @deprecated "Use new/1 instead"
   @spec parse(url :: binary()) :: {:ok, __MODULE__.t()} | {:error, {module(), String.t()}}
@@ -161,13 +187,13 @@ defmodule URL do
   @doc """
   Parse a URL query string and percent decode.
 
-  ## Returns
+  ### Returns
 
   * Either a map of query params or
 
-  * an `{:error, {URL.Parser.ParseError, reason}}` tuple
+  * an `{:error, {URL.Parser.ParseError, reason}}` tuple.
 
-  ## Examples
+  ### Examples
 
       iex> URL.parse_query_string "url=http%3a%2f%2ffonzi.com%2f&name=Fonzi&mood=happy&coat=leather"
       %{
@@ -205,8 +231,6 @@ defmodule URL do
   defparsec :parse_query,
             optional(hfields())
 
-  defdelegate to_string(url), to: URI
-
   for {scheme, module} <- @supported_schemes do
     defp parse_scheme(%URI{scheme: unquote(scheme)} = uri) do
       unquote(module).parse(uri)
@@ -238,7 +262,7 @@ defmodule URL do
     other
   end
 
-  def uri_new(uri) do
+  defp uri_new(uri) do
     case URI.new(uri) do
       {:error, reason} -> {:error, uri_error(reason)}
       {:ok, uri} -> {:ok, uri}

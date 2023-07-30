@@ -87,7 +87,8 @@ defmodule Url.MixProject do
       ],
       source_url: @source_url,
       source_ref: "v#{@version}",
-      formatters: ["html"]
+      formatters: ["html"],
+      skip_undefined_reference_warnings_on: ["changelog", "CHANGELOG.md"]
     ]
   end
 
