@@ -10,6 +10,7 @@ defmodule URL do
 
   """
   @type uri_type :: nil | URL.Data.t() | URL.Geo.t() | URL.Tel.t() | URL.UUID.t() | URL.Mailto.t()
+
   defstruct scheme: nil,
             path: nil,
             query: nil,
