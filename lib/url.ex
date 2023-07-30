@@ -46,8 +46,8 @@ defmodule URL do
   import URL.ParseHelpers.{Core, Mailto, Params, Unwrap}
 
   @doc """
-  Parses a url and returns a %URL{} struct that
-  has the same shape as Elixir's %URI{} with the
+  Parses a string url and returns a `t:URL.t/0` struct that
+  has the same shape as Elixir's `t:URI.t/0` with the
   addition of the `parsed_path` key.
 
   ### Arguments
@@ -102,9 +102,9 @@ defmodule URL do
   end
 
   @doc """
-  Parses a url and returns a %URL{} struct that
-  has the same shape as Elixir's %URI{} with the
-  addition of the `parsed_path` key.
+  Parses a string url and returns a `t:URL.t/0` struct that
+  has the same shape as Elixir's `t:URI.t/0` with the
+  addition of the `parsed_path` key, or raises an exception.
 
   ### Arguments
 
