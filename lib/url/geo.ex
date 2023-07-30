@@ -26,28 +26,31 @@ defmodule URL.Geo do
 
       iex> geo = URI.parse("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
       iex> URL.Geo.parse(geo)
-      %URL.Geo{
-        alt: 3.4,
-        lat: 48.198634,
-        lng: -16.371648,
-        params: %{"crs" => "wgs84", "u" => 40.0}
-      }
+      {:ok,
+       %URL.Geo{
+         lat: 48.198634,
+         lng: -16.371648,
+         alt: 3.4,
+         params: %{"crs" => "wgs84", "u" => 40.0}
+       }}
 
   """
-  @spec parse(URI.t()) :: __MODULE__.t() | {:error, {module(), binary()}}
+  @spec parse(URI.t()) :: {:ok, __MODULE__.t()} | {:error, {module(), binary()}}
   def parse(%URI{scheme: "geo", path: path}) do
     with {:ok, geo} <- unwrap(parse_geo(path)) do
       geo
       |> normalize_params(@param_map)
       |> structify(__MODULE__)
+      |> Params.wrap(:ok)
     end
   end
 
   defparsecp :parse_geo,
-    number() |> unwrap_and_tag(:lat)
+    number() |> unwrap_and_tag(:lat) |> label("lng")
     |> ignore(comma())
-    |> concat(number() |> unwrap_and_tag(:lng))
-    |> optional(ignore(comma()) |> concat(number()) |> unwrap_and_tag(:alt))
+    |> concat(number() |> unwrap_and_tag(:lng)) |> label("lat")
+    |> optional(ignore(comma()) |> concat(number()) |> unwrap_and_tag(:alt)) |> label("alt")
     |> concat(params())
+    |> label("geo data")
 
 end

@@ -2,7 +2,7 @@ defmodule Url.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/kipcole9/url"
-  @version "1.5.0"
+  @version "2.0.0"
 
   def project do
     [

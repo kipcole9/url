@@ -67,4 +67,9 @@ defmodule URL.ParseHelpers.Params do
     end
   end
 
+  @doc false
+  def wrap(term, atom) do
+    {atom, term}
+  end
+
 end

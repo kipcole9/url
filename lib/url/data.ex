@@ -4,6 +4,7 @@ defmodule URL.Data do
   """
   import NimbleParsec
   import URL.ParseHelpers.{Core, Params, Unwrap}
+  alias URL.ParseHelpers.Params
 
   @default_mediatype "text/plain"
   defstruct mediatype: @default_mediatype, params: %{}, data: ""
@@ -21,22 +22,26 @@ defmodule URL.Data do
 
       iex> data = URI.parse "data:text/plain;base64,SGVsbG8gV29ybGQh"
       iex> URL.Data.parse(data)
-      %URL.Data{
-        data: "Hello World!",
-        mediatype: "text/plain",
-        params: %{"encoding" => "base64"}
-      }
+      {:ok,
+       %URL.Data{
+         mediatype: "text/plain",
+         params: %{"encoding" => "base64"},
+         data: "Hello World!"
+       }}
 
   """
-  @spec parse(URI.t()) :: __MODULE__.t() | {:error, {module(), binary()}}
+  @spec parse(URI.t()) :: {:ok, __MODULE__.t()} | {:error, {module(), binary()}}
   def parse(%URI{scheme: "data", path: nil}) do
-    struct(__MODULE__, data: "")
+    __MODULE__
+    |> struct(data: "")
+    |> Params.wrap(:ok)
   end
 
   def parse(%URI{scheme: "data", path: path}) do
     with {:ok, data} <- unwrap(parse_data(path)) do
       struct(__MODULE__, data)
       |> decode_data
+      |> Params.wrap(:ok)
     end
   end
 

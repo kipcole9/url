@@ -4,6 +4,7 @@ defmodule URL.Tel do
   """
   import NimbleParsec
   import URL.ParseHelpers.{Core, Params, Unwrap}
+  alias URL.ParseHelpers.Params
 
   defstruct tel: nil, params: %{}
 
@@ -21,18 +22,21 @@ defmodule URL.Tel do
 
       iex> tel = URI.parse "tel:+61-0407-555-987"
       iex> URL.Tel.parse(tel)
-      %URL.Tel{params: %{}, tel: "+61 407 555 987"}
+      {:ok, %URL.Tel{tel: "+61 407 555 987", params: %{}}}
 
       iex> tel = URI.parse "tel:0407-555-987;phone-context=+61"
       iex> URL.Tel.parse(tel)
-      %URL.Tel{params: %{"phone-context" => "+61"}, tel: "+61 407 555 987"}
+      {:ok, %URL.Tel{tel: "+61 407 555 987", params: %{"phone-context" => "+61"}}}
 
   """
-  @spec parse(URI.t()) :: __MODULE__.t() | {:error, {module(), binary()}}
+  @spec parse(URI.t()) :: {:ok, __MODULE__.t()} | {:error, {module(), binary()}}
   def parse(%URI{scheme: "tel", path: path}) do
     with {:ok, tel} <- unwrap(parse_tel(path)) do
       tel = struct(__MODULE__, tel)
-      Map.put(tel, :tel, format(tel))
+
+      tel
+      |> Map.put(:tel, format(tel))
+      |> Params.wrap(:ok)
     end
   end
 

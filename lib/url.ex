@@ -56,9 +56,9 @@ defmodule URL do
 
   ## Returns
 
-  * `{:ok, URL.t()}` or
+  * `{:ok, t:URL.t/0}` or
 
-  * `{:error, reason}`
+  * `{:error, {exception, reason}}`
 
   ## Example
 
@@ -82,11 +82,17 @@ defmodule URL do
       }
     }
 
+    iex> URL.new("geo:48.198634,--16.371648,3.4;crs=wgs84;u=40.0")
+    {:error,
+     {URL.Parser.ParseError,
+      "expected an string of digits while processing lat inside alt inside geo data. Detected on line 1 at \\"-16.371648,3.4;crs=w\\" <> ..."}}
+
   """
-  @spec new(url :: binary()) :: {:ok, __MODULE__.t()} | {:error, String.t()}
+  @spec new(url :: binary()) :: {:ok, __MODULE__.t()} | {:error, {module(), String.t()}}
   def new(url) when is_binary(url) do
-    with {:ok, parsed} <- uri_new(url) do
-      {:ok, parse_scheme(parsed) |> merge_uri()}
+    with {:ok, uri} <- uri_new(url),
+         {:ok, scheme} <- parse_scheme(uri) do
+      {:ok, merge_uri(uri, scheme)}
     end
   end
 
@@ -101,7 +107,7 @@ defmodule URL do
 
   ## Returns
 
-  * `URL.t()` or
+  * `t:URL.t/0` or
 
   * raises an exception
 
@@ -141,41 +147,40 @@ defmodule URL do
 
   ## Arguments
 
-  * `url` is a binary representation of a URL
+  * `url` is a binary representation of a URL.
 
   ## Returns
 
-  * `URL.t()` or
+  * `{:ok, t:URL.t/0}` or
 
-  * `{:error, reason}`
+  * `{:error, {exception, reason}}`
 
   ## Example
 
     iex> URL.parse("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
-    %URL{
-      authority: nil,
-      fragment: nil,
-      host: nil,
-      parsed_path: %URL.Geo{
-        alt: 3.4,
-        lat: 48.198634,
-        lng: -16.371648,
-        params: %{"crs" => "wgs84", "u" => 40.0}
-      },
-      path: "48.198634,-16.371648,3.4;crs=wgs84;u=40.0",
-      port: nil,
-      query: nil,
-      scheme: "geo",
-      userinfo: nil
-    }
+    {:ok,
+     %URL{
+       scheme: "geo",
+       path: "48.198634,-16.371648,3.4;crs=wgs84;u=40.0",
+       query: nil,
+       fragment: nil,
+       authority: nil,
+       userinfo: nil,
+       host: nil,
+       port: nil,
+       parsed_path: %URL.Geo{
+         lat: 48.198634,
+         lng: -16.371648,
+         alt: 3.4,
+         params: %{"crs" => "wgs84", "u" => 40.0}
+       }
+     }}
 
   """
   @doc deprecated: "Use new/1 instead"
-  @spec parse(url :: binary()) :: __MODULE__.t()
+  @spec parse(url :: binary()) :: {:ok, __MODULE__.t()} | {:error, {module(), String.t()}}
   def parse(url) when is_binary(url) do
-    url
-    |> parse_scheme()
-    |> merge_uri()
+    new(url)
   end
 
   @doc """
@@ -227,25 +232,19 @@ defmodule URL do
 
   defdelegate to_string(url), to: URI
 
-  defp parse_scheme(url) when is_binary(url) do
-    url
-    |> URI.parse
-    |> parse_scheme
-  end
-
   for {scheme, module} <- @supported_schemes do
     defp parse_scheme(%URI{scheme: unquote(scheme)} = uri) do
-      {uri, unquote(module).parse(uri)}
+      unquote(module).parse(uri)
     end
   end
 
-  defp parse_scheme(%URI{} = uri) do
-    {uri, nil}
+  defp parse_scheme(%URI{}) do
+    {:ok, nil}
   end
 
-  defp merge_uri({uri, parsed_path}) do
+  defp merge_uri(uri, parsed_path) do
     uri
-    |> Map.to_list
+    |> Map.to_list()
     |> Enum.map(&__MODULE__.trim/1)
     |> structify(__MODULE__)
     |> add_parsed_path(parsed_path)
@@ -266,7 +265,14 @@ defmodule URL do
 
   if Code.ensure_loaded?(URI) && function_exported?(URI, :new, 1) do
     def uri_new(uri) do
-      URI.new(uri)
+      if String.contains?(uri, " ") do
+        {:error, {URL.Parser.ParseError, "spaces in URL"}}
+      else
+        case URI.new(uri) do
+          {:error, reason} -> {:error, {URL.Parser.ParseError, reason}}
+          other -> other
+        end
+      end
     end
   else
     def uri_new(uri) do

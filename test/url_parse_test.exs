@@ -9,7 +9,7 @@ defmodule Url.Parse.Test do
 
   test "parsing a tel url" do
     assert URL.parse("tel:+610407555987") ==
-        %URL{
+        {:ok, %URL{
           authority: nil,
           fragment: nil,
           host: nil,
@@ -19,12 +19,12 @@ defmodule Url.Parse.Test do
           query: nil,
           scheme: "tel",
           userinfo: nil
-        }
+          }}
   end
 
   test "parsing a geo url" do
     assert URL.parse("GEO:48.198634,-16.371648,3.4;crs=wgs84;u=40.0") ==
-        %URL{
+        {:ok, %URL{
           authority: nil,
           fragment: nil,
           host: nil,
@@ -39,12 +39,12 @@ defmodule Url.Parse.Test do
           query: nil,
           scheme: "geo",
           userinfo: nil
-        }
+          }}
   end
 
   test "parsing a data url that is base64 encoded" do
     assert URL.parse("data:text/plain;base64,SGVsbG8gV29ybGQh") ==
-        %URL{
+        {:ok, %URL{
           authority: nil,
           fragment: nil,
           host: nil,
@@ -58,13 +58,12 @@ defmodule Url.Parse.Test do
           query: nil,
           scheme: "data",
           userinfo: nil
-        }
+          }}
   end
 
   test "parsing a data url that is not base64 encoded" do
     assert URL.parse("data:,Hello%20World%21") ==
-        %URL{
-          authority: nil,
+        {:ok, %URL{
           fragment: nil,
           host: nil,
           parsed_path: %URL.Data{
@@ -77,13 +76,12 @@ defmodule Url.Parse.Test do
           query: nil,
           scheme: "data",
           userinfo: nil
-        }
+          }}
   end
 
   test "parsing an http url" do
     assert URL.parse("http://thing.com/my_path") ==
-        %URL{
-          authority: "thing.com",
+        {:ok, %URL{
           fragment: nil,
           host: "thing.com",
           parsed_path: nil,
@@ -92,22 +90,12 @@ defmodule Url.Parse.Test do
           query: nil,
           scheme: "http",
           userinfo: nil
-        }
+          }}
   end
 
   test "parsing a url with spaces" do
     assert URL.parse("http://  thing.com/my_path ") ==
-      %URL{
-        authority: "thing.com",
-        fragment: nil,
-        host: "thing.com",
-        parsed_path: nil,
-        path: "/my_path",
-        port: 80,
-        query: nil,
-        scheme: "http",
-        userinfo: nil
-      }
+      {:error, {URL.Parser.ParseError, "spaces in URL"}}
   end
 
 end
