@@ -2,7 +2,7 @@
 
 ## URL v2.0.0
 
-This is the changelog for URL version 2.0.0 released on ______, 2023.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
+This is the changelog for URL version 2.0.0 released on August 4th, 2023.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
 
 **URL version 2.0.0 is supported on Elixir 1.13 and later only.**
 
@@ -13,6 +13,10 @@ This is the changelog for URL version 2.0.0 released on ______, 2023.  For older
 ### Deprecations
 
 * Hard deprecates `URL.parse/1`
+
+### Bug Fixes
+
+* Remove warnings for unused variables when neither `ex_phone_number` or `ex_cldr` are configured (these are both optional dependencies). Thanks to @shahryarjb for the report. Closes #5.
 
 ## URL v1.5.0
 
