@@ -71,20 +71,13 @@ defmodule URL.Tel do
       ""
     end
   else
-    defp parse_phone_number(number, territory \\ nil) do
-      number
-    end
-
-    defp format(%__MODULE__{tel: tel}, format \\ :international) do
+    defp format(%__MODULE__{tel: tel}, _format \\ :international) do
       tel
-    end
-
-    defp phone_context(_) do
-      ""
     end
   end
 
-  defp get_territory do
+  @doc false
+  def get_territory do
     cldr_territory() || gettext_territory() || @default_territory
   end
 
