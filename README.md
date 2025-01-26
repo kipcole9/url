@@ -189,7 +189,7 @@ Optional configuration in `mix.exs`:
   defp deps do
     [
       # Required
-      {:ex_url, "~> 1.5"},
+      {:ex_url, "~> 2.0"},
 
       # Optional
       {:ex_phone_number, "~> 0.1"},
@@ -202,6 +202,6 @@ Optional configuration in `mix.exs`:
 
 ## Copyright and License
 
-Copyright 2018-2023 Kip Cole
+Copyright 2018-2025 Kip Cole
 
 See LICENCE.md for the licence terms.
