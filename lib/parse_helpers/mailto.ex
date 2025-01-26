@@ -31,7 +31,7 @@ defmodule URL.ParseHelpers.Mailto do
   end
 
   @doc false
-  def join_address(_rest, parts, context, _, _) do
+  def join_address(rest, parts, context, _, _) do
     domain =
       parts
       |> Enum.map(fn
@@ -41,7 +41,7 @@ defmodule URL.ParseHelpers.Mailto do
       |> Enum.reverse()
       |> Enum.join()
 
-    {[domain], context}
+    {rest, [domain], context}
   end
 
   @doc false

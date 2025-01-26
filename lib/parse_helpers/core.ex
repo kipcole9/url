@@ -248,8 +248,8 @@ defmodule URL.ParseHelpers.Core do
   end
 
   @doc false
-  def base64_encoding(_rest, _args, context, _, _) do
-    {["base64", "encoding"], context}
+  def base64_encoding(rest, _args, context, _, _) do
+    {rest, ["base64", "encoding"], context}
   end
 
   @doc false
@@ -346,8 +346,8 @@ defmodule URL.ParseHelpers.Core do
   end
 
   @doc false
-  def unpercent(_rest, [arg], context, _, _) do
-    {[URI.decode(arg)], context}
+  def unpercent(rest, [arg], context, _, _) do
+    {rest, [URI.decode(arg)], context}
   end
 
   #    SAFE-CHAR = WSP / "!" / %x23-39 / %x3C-7E / NON-ASCII
@@ -366,8 +366,8 @@ defmodule URL.ParseHelpers.Core do
   end
 
   @doc false
-  def unescape(_rest, args, context, _, _) do
-    {unescape(args), context}
+  def unescape(rest, args, context, _, _) do
+    {rest, unescape(args), context}
   end
 
   @doc false
