@@ -3,7 +3,7 @@ defmodule Url.MixProject do
 
   @source_url "https://github.com/kipcole9/url"
 
-  @version "2.0.0"
+  @version "2.0.1"
 
   def project do
     [
@@ -44,7 +44,7 @@ defmodule Url.MixProject do
 
   defp deps do
     [
-      {:nimble_parsec, "~> 1.0"},
+      {:nimble_parsec, ">= 1.4.1 or ~> 1.5"},
       {:ex_doc, "~> 0.18", only: [:dev, :release], runtime: false},
       {:ex_phone_number, "~> 0.1", optional: true},
       {:ex_cldr, "~> 2.18", optional: true},
