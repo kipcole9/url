@@ -2,6 +2,14 @@
 
 **URL version 2.0.0 is supported on Elixir 1.13 and later only.**
 
+## URL v2.0.2
+
+This is the changelog for URL version 2.0.2 released on September 21st, 2025.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
+
+### Bug Fixes
+
+* Relax `gettext` requirement to allow `~> 0.13 or ~> 1.0`. Thanks to @jnylen for the PR. Closes #7.
+
 ## URL v2.0.1
 
 This is the changelog for URL version 2.0.1 released on January 26th, 2025.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)

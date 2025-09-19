@@ -3,7 +3,7 @@ defmodule Url.MixProject do
 
   @source_url "https://github.com/kipcole9/url"
 
-  @version "2.0.1"
+  @version "2.0.2"
 
   def project do
     [
@@ -49,7 +49,7 @@ defmodule Url.MixProject do
       {:ex_phone_number, "~> 0.1", optional: true},
       {:ex_cldr, "~> 2.18", optional: true},
       {:jason, "~> 1.0", optional: true},
-      {:gettext, "~> 0.13", optional: true},
+      {:gettext, "~> 0.13 or ~> 1.0", optional: true},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false, optional: true}
     ]
   end
