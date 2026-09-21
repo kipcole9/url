@@ -1,7 +1,7 @@
 # Getting Started
 
 [![Hex pm](http://img.shields.io/hexpm/v/ex_url.svg?style=flat)](https://hex.pm/packages/ex_url)
-[![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://github.com/kipcole9/url/blob/master/LICENSE.md)
+[![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://github.com/kipcole9/url/blob/main/LICENSE.md)
 
 ## Overview
 
@@ -172,7 +172,7 @@ Configure `:ex_url` in `mix.exs`:
 ```elixir
   defp deps do
     [
-      {:ex_url, "~> 1.5"},
+      {:ex_url, "~> 2.0"},
       ...
     ]
   end
@@ -202,6 +202,6 @@ Optional configuration in `mix.exs`:
 
 ## Copyright and License
 
-Copyright 2018-2025 Kip Cole
+Copyright 2018-2026 Kip Cole
 
 See LICENCE.md for the licence terms.

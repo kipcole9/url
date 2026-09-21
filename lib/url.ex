@@ -172,10 +172,13 @@ defmodule URL do
       "geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0"
 
   """
-  @dialyzer {:nowarn_function, {:to_string, 1}}
   @spec to_string(t()) :: String.t()
   def to_string(%URL{} = url) do
-    URI.to_string(url)
+    url
+    |> Map.from_struct()
+    |> Map.delete(:parsed_path)
+    |> then(&struct(URI, &1))
+    |> URI.to_string()
   end
 
   @doc false

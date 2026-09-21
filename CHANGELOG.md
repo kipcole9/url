@@ -2,6 +2,18 @@
 
 **URL version 2.0.0 is supported on Elixir 1.13 and later only.**
 
+## URL v2.0.3
+
+This is the changelog for URL version 2.0.3. It has not been released yet.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
+
+### Bug Fixes
+
+* Fix `URL.to_string/1` so it builds a `t:URI.t/0` before delegating to `URI.to_string/1`, resolving the type warning emitted by Elixir 1.20.
+
+* Remove the unused optional `jason` dependency; nothing in the library referenced it.
+
+* Correct the `URL.UUID` moduledoc and the `URL.Mailto.parse/1` doc, which named the wrong scheme.
+
 ## URL v2.0.2
 
 This is the changelog for URL version 2.0.2 released on September 21st, 2025.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)

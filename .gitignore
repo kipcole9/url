@@ -36,3 +36,6 @@ ex_url-*.tar
 *.snapshot
 .DS_Store
 .iex.exs
+
+# Per-session working context for Claude Code (local only)
+CLAUDE.local.md

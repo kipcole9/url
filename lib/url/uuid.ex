@@ -1,6 +1,6 @@
 defmodule URL.UUID do
   @moduledoc """
-  Parses a `geo` URL
+  Parses a `uuid` URL
   """
   import NimbleParsec
   import URL.ParseHelpers.{Core, Params, Unwrap}

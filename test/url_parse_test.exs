@@ -98,8 +98,11 @@ defmodule Url.Parse.Test do
               }}
   end
 
+  # The character `URI.new/1` reports as the offending part differs
+  # between Elixir versions (`":"` before 1.20, `" "` from 1.20), so
+  # only the shape of the error and its prefix are asserted.
   test "parsing a url with spaces" do
-    assert URL.new("http://  thing.com/my_path ") ==
-             {:error, {URI.Error, "cannot parse due to reason invalid_uri: \":\""}}
+    assert {:error, {URI.Error, "cannot parse due to reason invalid_uri: " <> _}} =
+             URL.new("http://  thing.com/my_path ")
   end
 end

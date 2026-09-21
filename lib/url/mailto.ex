@@ -14,7 +14,7 @@ defmodule URL.Mailto do
   defstruct to: nil, params: %{}
 
   @doc """
-  Parse a URI with the `:scheme` of "tel"
+  Parse a URI with the `:scheme` of "mailto"
 
   ## Example
 
