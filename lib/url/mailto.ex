@@ -1,6 +1,14 @@
 defmodule URL.Mailto do
   @moduledoc """
-  Parses a `mailto` URL
+  Parses the scheme-specific part of a `mailto` URL as defined
+  in [RFC 6068](https://tools.ietf.org/html/rfc6068).
+
+  The recipient addresses and the header fields in the query
+  (`subject`, `body` and so on) are percent-decoded during
+  parsing. [RFC 2047](https://tools.ietf.org/html/rfc2047)
+  encoded words are not decoded. The primary API is `parse/1`,
+  which `URL.new/1` calls for any URL with the `mailto` scheme.
+
   """
   import NimbleParsec
   import URL.ParseHelpers.{Core, Mailto, Unwrap}
@@ -14,9 +22,22 @@ defmodule URL.Mailto do
   defstruct to: [], params: %{}
 
   @doc """
-  Parse a URI with the `:scheme` of "mailto"
+  Parses the path and query of a `mailto` URI into a `t:t/0` struct.
 
-  ## Example
+  ### Arguments
+
+  * `uri` is a `t:URI.t/0` whose `:scheme` is `"mailto"`.
+
+  ### Returns
+
+  * `{:ok, t:t/0}` with the list of recipient addresses in `:to`
+    (empty when the URL has no address) and the decoded header
+    fields in `:params`, or
+
+  * `{:error, {URL.Parser.ParseError, reason}}` if the address
+    list or a header field cannot be parsed.
+
+  ### Examples
 
       iex> mailto = URI.parse("mailto:user@%E7%B4%8D%E8%B1%86.example.org?subject=Test&body=NATTO")
       iex> URL.Mailto.parse(mailto)
@@ -28,6 +49,8 @@ defmodule URL.Mailto do
 
       iex> URL.Mailto.parse(URI.parse("mailto:?subject=Test"))
       {:ok, %URL.Mailto{to: [], params: %{"subject" => "Test"}}}
+
+      iex> {:error, {URL.Parser.ParseError, _reason}} = URL.Mailto.parse(URI.parse("mailto:a@b.com?subject"))
 
   """
   @spec parse(URI.t()) :: {:ok, __MODULE__.t()} | {:error, {module(), binary()}}

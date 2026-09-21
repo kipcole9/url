@@ -4,11 +4,15 @@
 
 ## URL v2.0.3
 
-This is the changelog for URL version 2.0.3. It has not been released yet.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
+This is the changelog for URL version 2.0.3 released on September 21st, 2026.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
 
 ### Breaking Change
 
 * Requires Elixir 1.17 or later; that is the oldest version exercised in CI.
+
+### Enhancements
+
+* Function and module documentation follows the standard template, with arguments, returns and examples for every public function, and the scheme modules grouped in the generated docs.
 
 ### Bug Fixes
 

@@ -6,6 +6,7 @@ defmodule UrlTest do
   doctest URL.Geo
   doctest URL.UUID
   doctest URL.Mailto
+  doctest URL.Parser.ParseError
 
   test "parsing a tel url" do
     assert URL.new("tel:+610407555987") ==

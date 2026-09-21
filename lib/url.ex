@@ -5,8 +5,16 @@ defmodule URL do
   This module provides functions for parsing URLs. It is modelled on
   Elixir's `URI` module but will also parse scheme-specific URIs such
   as [geo](https://tools.ietf.org/rfc/rfc5870), [data](https://tools.ietf.org/html/rfc2397)
-  [tel](https://tools.ietf.org/html/rfc3966), [mailto](https://tools.ietf.org/html/rfc2047),
+  [tel](https://tools.ietf.org/html/rfc3966), [mailto](https://tools.ietf.org/html/rfc6068),
   and [uuid](https://tools.ietf.org/html/draft-kindel-uuid-uri-00).
+
+  The primary API is `new/1`, which returns a `t:t/0` struct with the
+  same shape as `t:URI.t/0` plus a `:parsed_path` holding the parsed
+  scheme-specific data (`URL.Geo`, `URL.Data`, `URL.Tel`, `URL.Mailto`
+  or `URL.UUID`), or `nil` for any other scheme. `new!/1` raises
+  instead of returning an error tuple, `to_string/1` reverses the
+  parse and `parse_query_string/1` decodes a query into a map.
+  No function in this module raises on malformed input.
 
   """
   @type uri_type :: nil | URL.Data.t() | URL.Geo.t() | URL.Tel.t() | URL.UUID.t() | URL.Mailto.t()

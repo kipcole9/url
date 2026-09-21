@@ -3,7 +3,7 @@ defmodule Url.MixProject do
 
   @source_url "https://github.com/kipcole9/url"
 
-  @version "2.0.2"
+  @version "2.0.3"
 
   def project do
     [
@@ -88,7 +88,15 @@ defmodule Url.MixProject do
       source_url: @source_url,
       source_ref: "v#{@version}",
       formatters: ["html", "markdown"],
+      groups_for_modules: groups_for_modules(),
       skip_undefined_reference_warnings_on: ["changelog", "CHANGELOG.md"]
+    ]
+  end
+
+  defp groups_for_modules do
+    [
+      Schemes: [URL.Data, URL.Geo, URL.Mailto, URL.Tel, URL.UUID],
+      Exceptions: [URL.Parser.ParseError]
     ]
   end
 

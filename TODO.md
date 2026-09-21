@@ -2,11 +2,9 @@
 
 Work for `ex_url`. Findings from the 2026-09-21 release-readiness review; there are no design documents yet, so no `plans/` directory.
 
-## Open
-
-* [ ] **Bring function docs to the standard template** — the scheme modules' `parse/1` docs use `## Example` and lack `### Arguments` and `### Returns`. Add `groups_for_modules` to `docs/0` so the scheme modules and `URL.Parser.ParseError` are grouped.
-
 ## Done
+
+* [x] **Bring function docs to the standard template** — every public function has arguments, returns and examples; scheme modules and the exception are grouped in ExDoc. 2026-09-21, v2.0.3.
 
 * [x] **Return errors instead of raising on invalid input** — empty scheme paths, `nil` queries, non-binary input, unparseable `tel` numbers and a missing Cldr backend all return tuples now, with a bad-input test suite. 2026-09-21.
 

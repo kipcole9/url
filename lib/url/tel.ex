@@ -1,6 +1,17 @@
 defmodule URL.Tel do
   @moduledoc """
-  Parses a `tel` URL
+  Parses the scheme-specific part of a `tel` URL as defined
+  in [RFC 3966](https://tools.ietf.org/html/rfc3966).
+
+  When the optional `ex_phone_number` dependency is available the
+  number is formatted in international form, with a `phone-context`
+  parameter that is itself a number prepended first. The territory
+  used for numbers without a country code comes from the current
+  `ex_cldr` locale, then the current `gettext` locale, then `"US"`.
+  Numbers that `ex_phone_number` cannot parse are kept as written.
+  The primary API is `parse/1`, which `URL.new/1` calls for any URL
+  with the `tel` scheme.
+
   """
   import NimbleParsec
   import URL.ParseHelpers.{Core, Params, Unwrap}
@@ -16,9 +27,22 @@ defmodule URL.Tel do
   @default_territory "US"
 
   @doc """
-  Parse a URI with the `:scheme` of "tel"
+  Parses the path of a `tel` URI into a `t:t/0` struct.
 
-  ## Examples
+  ### Arguments
+
+  * `uri` is a `t:URI.t/0` whose `:scheme` is `"tel"`.
+
+  ### Returns
+
+  * `{:ok, t:t/0}` with the formatted (or, if it cannot be
+    parsed, unformatted) telephone number in `:tel` and any
+    parameters in `:params`, or
+
+  * `{:error, {URL.Parser.ParseError, reason}}` if the path is
+    not a valid telephone subscriber string, including an empty path.
+
+  ### Examples
 
       iex> tel = URI.parse "tel:+61-0407-555-987"
       iex> URL.Tel.parse(tel)
@@ -27,6 +51,8 @@ defmodule URL.Tel do
       iex> tel = URI.parse "tel:0407-555-987;phone-context=+61"
       iex> URL.Tel.parse(tel)
       {:ok, %URL.Tel{tel: "+61 407 555 987", params: %{"phone-context" => "+61"}}}
+
+      iex> {:error, {URL.Parser.ParseError, _reason}} = URL.Tel.parse(URI.parse("tel:abc"))
 
   """
   @spec parse(URI.t()) :: {:ok, __MODULE__.t()} | {:error, {module(), binary()}}

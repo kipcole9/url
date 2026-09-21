@@ -1,6 +1,13 @@
 defmodule URL.Geo do
   @moduledoc """
-  Parses a `geo` URL
+  Parses the scheme-specific part of a `geo` URL as defined
+  in [RFC 5870](https://tools.ietf.org/rfc/rfc5870).
+
+  A `geo` URL carries a latitude, a longitude, an optional
+  altitude and optional parameters such as `crs` and `u`. The
+  primary API is `parse/1`, which `URL.new/1` calls for any URL
+  with the `geo` scheme.
+
   """
   import NimbleParsec
   import URL.ParseHelpers.{Core, Params, Unwrap}
@@ -20,9 +27,22 @@ defmodule URL.Geo do
   }
 
   @doc """
-  Parse a URI with the `:scheme` of "geo"
+  Parses the path of a `geo` URI into a `t:t/0` struct.
 
-  ## Example
+  ### Arguments
+
+  * `uri` is a `t:URI.t/0` whose `:scheme` is `"geo"`.
+
+  ### Returns
+
+  * `{:ok, t:t/0}` with the latitude, longitude, altitude (`nil`
+    when absent) and parameters. The `u` (uncertainty) parameter
+    is converted to a number, or
+
+  * `{:error, {URL.Parser.ParseError, reason}}` if the path is
+    not a valid `geo` payload, including an empty path.
+
+  ### Examples
 
       iex> geo = URI.parse("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
       iex> URL.Geo.parse(geo)
@@ -33,6 +53,11 @@ defmodule URL.Geo do
          alt: 3.4,
          params: %{"crs" => "wgs84", "u" => 40.0}
        }}
+
+      iex> URL.Geo.parse(URI.parse("geo:48.198634,-16.371648"))
+      {:ok, %URL.Geo{lat: 48.198634, lng: -16.371648, alt: nil, params: %{}}}
+
+      iex> {:error, {URL.Parser.ParseError, _reason}} = URL.Geo.parse(URI.parse("geo:48.198634"))
 
   """
   @spec parse(URI.t()) :: {:ok, __MODULE__.t()} | {:error, {module(), binary()}}
