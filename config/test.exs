@@ -1,3 +1,3 @@
 import Config
 
-config :ex_cldr, default_backend: MyApp.Cldr
+config :localize, default_locale: :en

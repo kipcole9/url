@@ -8,6 +8,7 @@ on:
 
 env:
   MIX_ENV: test
+  LOCALIZE_DEFAULT_LOCALE: en
 
 permissions:
   contents: read

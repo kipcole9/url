@@ -7,7 +7,7 @@ defmodule URL.Tel do
   number is formatted in international form, with a `phone-context`
   parameter that is itself a number prepended first. The territory
   used for numbers without a country code comes from the current
-  `ex_cldr` locale, then the current `gettext` locale, then `"US"`.
+  `localize` locale, then the current `gettext` locale, then `"US"`.
   Numbers that `ex_phone_number` cannot parse are kept as written.
   The primary API is `parse/1`, which `URL.new/1` calls for any URL
   with the `tel` scheme.
@@ -112,20 +112,18 @@ defmodule URL.Tel do
 
   @doc false
   def get_territory do
-    cldr_territory() || gettext_territory() || @default_territory
+    localize_territory() || gettext_territory() || @default_territory
   end
 
-  if Code.ensure_loaded?(Cldr) do
-    # `Cldr.get_locale/0` raises when `ex_cldr` is a dependency but no
-    # default backend is configured; that is a consumer configuration
-    # choice, not invalid input, so fall through to the other sources.
-    defp cldr_territory do
-      Cldr.get_locale().territory
-    rescue
-      Cldr.NoDefaultBackendError -> nil
+  if Code.ensure_loaded?(Localize) do
+    # `Localize.get_locale/0` never raises: it falls back to the
+    # configured default locale and finally to `:en`, whose territory
+    # is `nil`, which hands over to the gettext and "US" fallbacks.
+    defp localize_territory do
+      Localize.get_locale().territory
     end
   else
-    defp cldr_territory do
+    defp localize_territory do
       nil
     end
   end

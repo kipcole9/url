@@ -10,6 +10,8 @@ This is the changelog for URL version 2.0.3 released on September 21st, 2026.  F
 
 * Requires Elixir 1.17 or later; that is the oldest version exercised in CI.
 
+* The optional `ex_cldr` dependency is replaced by [localize](https://hex.pm/packages/localize). The territory for `tel` numbers without a country code now comes from `Localize.get_locale/0`; `ex_cldr` is no longer consulted.
+
 ### Enhancements
 
 * Function and module documentation follows the standard template, with arguments, returns and examples for every public function, and the scheme modules grouped in the generated docs.
@@ -20,7 +22,7 @@ This is the changelog for URL version 2.0.3 released on September 21st, 2026.  F
 
 * `URL.parse_query_string/1` returns `%{}` for a `nil` query (and any URL without one) instead of raising, and an `ArgumentError` tuple for non-binary input.
 
-* `URL.Tel` keeps the unformatted number when `ex_phone_number` cannot parse it, instead of storing an error tuple in the `tel` field, and no longer raises when `ex_cldr` is present without a default backend.
+* `URL.Tel` keeps the unformatted number when `ex_phone_number` cannot parse it, instead of storing an error tuple in the `tel` field, and no longer raises when the locale library has no default locale configured.
 
 * Fix `URL.to_string/1` so it builds a `t:URI.t/0` before delegating to `URI.to_string/1`, resolving the type warning emitted by Elixir 1.20.
 

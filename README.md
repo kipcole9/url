@@ -182,7 +182,7 @@ If configured in `mix.exs`, URL will use the following libraries:
 
 * [ex_phone_number](https://hex.pm/packages/ex_phone_number) will be used to parse and format telephone numbers defined in the `tel` URI scheme. Numbers it cannot parse are kept as written.
 
-* [ex_cldr](https://hex.pm/packages/ex_cldr) and [gettext](https://hex.pm/packages/gettext) will be used to determine the current locale and therefore the current territory (country) for parsing and formatting telephone numbers that don't have a country code supplied.
+* [localize](https://hex.pm/packages/localize) and [gettext](https://hex.pm/packages/gettext) will be used to determine the current locale and therefore the current territory (country) for parsing and formatting telephone numbers that don't have a country code supplied. The `localize` locale is consulted first, then the `gettext` locale, then `"US"`.
 
 Optional configuration in `mix.exs`:
 ```elixir
@@ -193,7 +193,7 @@ Optional configuration in `mix.exs`:
 
       # Optional
       {:ex_phone_number, "~> 0.1"},
-      {:ex_cldr, "~> 2.18"},
+      {:localize, "~> 1.2"},
       {:gettext, "~> 0.13"}
       ...
     ]

@@ -120,7 +120,9 @@ defmodule Url.BadInputTest do
     end
 
     test "URL.new!/1 raises ArgumentError" do
-      assert_raise ArgumentError, fn -> URL.new!(nil) end
+      for input <- [nil, :atom, 1] do
+        assert_raise ArgumentError, fn -> URL.new!(input) end
+      end
     end
   end
 
@@ -162,17 +164,26 @@ defmodule Url.BadInputTest do
     end
   end
 
-  describe "ex_cldr without a default backend" do
-    test "tel parsing falls back to the other territory sources" do
-      backend = Application.get_env(:ex_cldr, :default_backend)
-      Application.delete_env(:ex_cldr, :default_backend)
+  describe "territory from the localize locale" do
+    test "a locale with a territory supplies the country code" do
+      {:ok, _} = Localize.put_locale("en-AU")
 
       try do
+        assert URL.Tel.get_territory() == :AU
+
         assert {:ok, %URL{parsed_path: %URL.Tel{tel: "+61 407 555 987"}}} =
-                 URL.new("tel:0407-555-987;phone-context=+61")
+                 URL.new("tel:0407-555-987")
       after
-        Application.put_env(:ex_cldr, :default_backend, backend)
+        {:ok, _} = Localize.put_locale(:en)
       end
+    end
+
+    test "a locale without a territory falls back to the default" do
+      {:ok, _} = Localize.put_locale(:en)
+      assert URL.Tel.get_territory() == :US
+
+      assert {:ok, %URL{parsed_path: %URL.Tel{tel: "+1 650-253-0000"}}} =
+               URL.new("tel:650-253-0000")
     end
   end
 end

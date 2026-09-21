@@ -22,7 +22,7 @@ defmodule Url.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       dialyzer: [
         ignore_warnings: ".dialyzer_ignore_warnings",
-        plt_add_apps: ~w(gettext inets mix ex_cldr ex_phone_number)a
+        plt_add_apps: ~w(gettext inets mix localize ex_phone_number)a
       ],
       compilers: Mix.compilers()
     ]
@@ -47,7 +47,7 @@ defmodule Url.MixProject do
       {:nimble_parsec, ">= 1.4.1 or ~> 1.5"},
       {:ex_doc, "~> 0.40", only: [:dev, :release], runtime: false},
       {:ex_phone_number, "~> 0.1", optional: true},
-      {:ex_cldr, "~> 2.18", optional: true},
+      {:localize, "~> 1.2", optional: true},
       {:gettext, "~> 0.13 or ~> 1.0", optional: true},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false, optional: true}
     ]
