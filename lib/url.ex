@@ -59,9 +59,12 @@ defmodule URL do
 
   * `{:ok, URL.t()}` or
 
-  * `{:error, {exception, reason}}`.
+  * `{:error, {exception, reason}}`. `exception` is `URI.Error` when
+    the URL is not syntactically valid, `URL.Parser.ParseError` when the
+    scheme-specific path cannot be parsed and `ArgumentError` when `url`
+    is not a binary.
 
-  ### Example
+  ### Examples
 
       iex> URL.new("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
       {:ok,
@@ -93,6 +96,9 @@ defmodule URL do
        {URI.Error,
         "cannot parse due to reason invalid_uri: \\">\\""}}
 
+      iex> URL.new(:not_a_url)
+      {:error, {ArgumentError, "expected a binary URL, got: :not_a_url"}}
+
   """
   @spec new(url :: binary()) :: {:ok, __MODULE__.t()} | {:error, {module(), String.t()}}
   def new(url) when is_binary(url) do
@@ -100,6 +106,10 @@ defmodule URL do
          {:ok, scheme} <- parse_scheme(uri) do
       {:ok, merge_uri(uri, scheme)}
     end
+  end
+
+  def new(other) do
+    {:error, {ArgumentError, "expected a binary URL, got: #{inspect(other)}"}}
   end
 
   @doc """
@@ -117,7 +127,7 @@ defmodule URL do
 
   * raises an exception.
 
-  ### Example
+  ### Examples
 
       iex> URL.new!("geo:48.198634,-16.371648,3.4;crs=wgs84;u=40.0")
       %URL{
@@ -139,7 +149,7 @@ defmodule URL do
 
   """
   @spec new!(url :: binary()) :: __MODULE__.t() | no_return()
-  def new!(url) when is_binary(url) do
+  def new!(url) do
     case new(url) do
       {:ok, parsed} ->
         parsed
@@ -149,6 +159,9 @@ defmodule URL do
 
       {:error, {URI.Error = exception, reason}} ->
         raise(exception, action: "parse", reason: "invalid_uri", part: reason)
+
+      {:error, {exception, reason}} ->
+        raise(exception, reason)
     end
   end
 
@@ -191,11 +204,18 @@ defmodule URL do
   @doc """
   Parse and percent decode a URL query string.
 
+  ### Arguments
+
+  * `query` is a query string, a `t:URL.t/0` (or any map with a
+    `:query` key) whose query is parsed, or an `{:error, reason}`
+    tuple which is returned unchanged so this function can be
+    piped after `new/1`.
+
   ### Returns
 
-  * Either a map of query params or
+  * Either a map of query params (an empty map when the query is `nil`) or
 
-  * an `{:error, {URL.Parser.ParseError, reason}}` tuple.
+  * an `{:error, {exception, reason}}` tuple.
 
   ### Examples
 
@@ -211,12 +231,20 @@ defmodule URL do
       iex> URL.new!(mailto) |> URL.parse_query_string()
       %{"body" => "NATTO", "subject" => "Test"}
 
+      iex> URL.new!("geo:48.198634,-16.371648") |> URL.parse_query_string()
+      %{}
+
   """
-  @spec parse_query_string(String.t() | map()) :: map() | {:error, {module(), binary()}}
+  @spec parse_query_string(String.t() | nil | map() | {:error, {module(), binary()}}) ::
+          map() | {:error, {module(), binary()}}
   def parse_query_string(query) when is_binary(query) do
     with {:ok, [params]} <- unwrap(parse_query(query)) do
       params
     end
+  end
+
+  def parse_query_string(nil) do
+    %{}
   end
 
   def parse_query_string({:error, {_, _}} = error) do
@@ -225,6 +253,10 @@ defmodule URL do
 
   def parse_query_string(%{query: query}) do
     parse_query_string(query)
+  end
+
+  def parse_query_string(other) do
+    {:error, {ArgumentError, "expected a query string or URL, got: #{inspect(other)}"}}
   end
 
   @doc false

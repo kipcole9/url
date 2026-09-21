@@ -36,6 +36,10 @@ defmodule URL.Geo do
 
   """
   @spec parse(URI.t()) :: {:ok, __MODULE__.t()} | {:error, {module(), binary()}}
+  def parse(%URI{scheme: "geo", path: nil} = uri) do
+    parse(%{uri | path: ""})
+  end
+
   def parse(%URI{scheme: "geo", path: path}) do
     with {:ok, geo} <- unwrap(parse_geo(path)) do
       geo

@@ -1,12 +1,22 @@
 # Changelog
 
-**URL version 2.0.0 is supported on Elixir 1.13 and later only.**
+**URL version 2.0.3 and later is supported on Elixir 1.17 and later only.**
 
 ## URL v2.0.3
 
 This is the changelog for URL version 2.0.3. It has not been released yet.  For older changelogs please consult the release tag on [GitHub](https://github.com/kipcole9/url/tags)
 
+### Breaking Change
+
+* Requires Elixir 1.17 or later; that is the oldest version exercised in CI.
+
 ### Bug Fixes
+
+* `URL.new/1` no longer raises on a scheme with an empty path (`mailto:`, `geo:`, `tel:`, `uuid:`, `urn:`, `urn:uuid:`) or on non-binary input. `mailto:` with no address parses to an empty `to` list; the others return `{:error, {URL.Parser.ParseError, _}}`.
+
+* `URL.parse_query_string/1` returns `%{}` for a `nil` query (and any URL without one) instead of raising, and an `ArgumentError` tuple for non-binary input.
+
+* `URL.Tel` keeps the unformatted number when `ex_phone_number` cannot parse it, instead of storing an error tuple in the `tel` field, and no longer raises when `ex_cldr` is present without a default backend.
 
 * Fix `URL.to_string/1` so it builds a `t:URI.t/0` before delegating to `URI.to_string/1`, resolving the type warning emitted by Elixir 1.20.
 

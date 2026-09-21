@@ -180,7 +180,7 @@ Configure `:ex_url` in `mix.exs`:
 
 If configured in `mix.exs`, URL will use the following libraries:
 
-* [ex_phone_number](https://hex.pm/packages/ex_phone_number) will be used to parse and format telephone numbers defined in the `tel` URI scheme
+* [ex_phone_number](https://hex.pm/packages/ex_phone_number) will be used to parse and format telephone numbers defined in the `tel` URI scheme. Numbers it cannot parse are kept as written.
 
 * [ex_cldr](https://hex.pm/packages/ex_cldr) and [gettext](https://hex.pm/packages/gettext) will be used to determine the current locale and therefore the current territory (country) for parsing and formatting telephone numbers that don't have a country code supplied.
 

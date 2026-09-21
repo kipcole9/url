@@ -29,12 +29,20 @@ defmodule URL.UUID do
 
   """
   @spec parse(URI.t()) :: {:ok, __MODULE__.t()} | {:error, {module(), binary()}}
+  def parse(%URI{scheme: "uuid", path: nil} = uri) do
+    parse(%{uri | path: ""})
+  end
+
   def parse(%URI{scheme: "uuid", path: path}) do
     with {:ok, uuid} <- unwrap(parse_uuid(path)) do
       uuid
       |> structify(__MODULE__)
       |> Params.wrap(:ok)
     end
+  end
+
+  def parse(%URI{scheme: "urn", path: path}) when path in [nil, ""] do
+    {:error, {URL.Parser.ParseError, "expected a URN namespace identifier after \"urn:\""}}
   end
 
   def parse(%URI{scheme: "urn", path: path}) do

@@ -7,11 +7,11 @@ defmodule URL.Mailto do
   alias URL.ParseHelpers.Params
 
   @type t() :: %__MODULE__{
-          to: [binary(), ...],
+          to: [binary()],
           params: map()
         }
 
-  defstruct to: nil, params: %{}
+  defstruct to: [], params: %{}
 
   @doc """
   Parse a URI with the `:scheme` of "mailto"
@@ -26,8 +26,15 @@ defmodule URL.Mailto do
          params: %{"body" => "NATTO", "subject" => "Test"}
        }}
 
+      iex> URL.Mailto.parse(URI.parse("mailto:?subject=Test"))
+      {:ok, %URL.Mailto{to: [], params: %{"subject" => "Test"}}}
+
   """
   @spec parse(URI.t()) :: {:ok, __MODULE__.t()} | {:error, {module(), binary()}}
+  def parse(%URI{scheme: "mailto", path: nil} = uri) do
+    parse(%{uri | path: ""})
+  end
+
   def parse(%URI{scheme: "mailto", path: path, query: query}) do
     with {:ok, mailto} <- unwrap(parse_mailto(path)),
          {:ok, [params]} <- unwrap(URL.parse_query(query)) do

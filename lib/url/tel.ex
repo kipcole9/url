@@ -30,6 +30,10 @@ defmodule URL.Tel do
 
   """
   @spec parse(URI.t()) :: {:ok, __MODULE__.t()} | {:error, {module(), binary()}}
+  def parse(%URI{scheme: "tel", path: nil} = uri) do
+    parse(%{uri | path: ""})
+  end
+
   def parse(%URI{scheme: "tel", path: path}) do
     with {:ok, tel} <- unwrap(parse_tel(path)) do
       tel = struct(__MODULE__, tel)
@@ -53,9 +57,13 @@ defmodule URL.Tel do
     defp format(%__MODULE__{tel: tel} = url, format \\ :international) do
       phone_context = phone_context(url.params)
 
+      # A syntactically valid `tel` URL need not be a number that
+      # ExPhoneNumber recognises (a local number with a domain
+      # `phone-context`, for example), so keep the unformatted number
+      # rather than storing an error tuple in the `tel` field.
       case parse_phone_number(phone_context <> tel) do
-        {:ok, tel} -> ExPhoneNumber.format(tel, format)
-        other -> other
+        {:ok, parsed} -> ExPhoneNumber.format(parsed, format)
+        {:error, _reason} -> tel
       end
     end
 
@@ -82,8 +90,13 @@ defmodule URL.Tel do
   end
 
   if Code.ensure_loaded?(Cldr) do
+    # `Cldr.get_locale/0` raises when `ex_cldr` is a dependency but no
+    # default backend is configured; that is a consumer configuration
+    # choice, not invalid input, so fall through to the other sources.
     defp cldr_territory do
       Cldr.get_locale().territory
+    rescue
+      Cldr.NoDefaultBackendError -> nil
     end
   else
     defp cldr_territory do
