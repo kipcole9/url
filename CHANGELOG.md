@@ -10,7 +10,7 @@ This is the changelog for URL version 2.0.3 released on September 21st, 2026.  F
 
 * Requires Elixir 1.17 or later; that is the oldest version exercised in CI.
 
-* The optional `ex_cldr` dependency is replaced by [localize](https://hex.pm/packages/localize). The territory for `tel` numbers without a country code now comes from `Localize.get_locale/0`; `ex_cldr` is no longer consulted.
+* The optional `ex_cldr` dependency is replaced by [localize](https://hex.pm/packages/localize). The territory for `tel` numbers without a country code now comes from `Localize.get_locale/0`; `ex_cldr` is no longer consulted. On OTP 26, `localize` also needs `json_polyfill` in the consumer's dependencies.
 
 ### Enhancements
 

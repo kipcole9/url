@@ -50,7 +50,23 @@ defmodule Url.MixProject do
       {:localize, "~> 1.2", optional: true},
       {:gettext, "~> 0.13 or ~> 1.0", optional: true},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false, optional: true}
-    ]
+    ] ++ maybe_json_polyfill()
+  end
+
+  # `localize` needs the OTP 27+ `:json` module. On OTP 26 it is
+  # supplied by `json_polyfill`, which is deliberately only a dev/test
+  # dependency of this project (so it never enters the hex package
+  # requirements). An OTP 26 consumer that opts into `localize` adds
+  # `{:json_polyfill, "~> 0.2 or ~> 1.0"}` to its own deps (see README);
+  # `localize` raises with those instructions at application start
+  # when `:json` is missing. The conditional avoids fetching the
+  # polyfill on OTP 27 and later, where its own build fails.
+  defp maybe_json_polyfill do
+    if Code.ensure_loaded?(:json) do
+      []
+    else
+      [{:json_polyfill, "~> 0.2 or ~> 1.0", only: [:dev, :test]}]
+    end
   end
 
   defp package do

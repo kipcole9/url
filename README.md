@@ -184,6 +184,8 @@ If configured in `mix.exs`, URL will use the following libraries:
 
 * [localize](https://hex.pm/packages/localize) and [gettext](https://hex.pm/packages/gettext) will be used to determine the current locale and therefore the current territory (country) for parsing and formatting telephone numbers that don't have a country code supplied. The `localize` locale is consulted first, then the `gettext` locale, then `"US"`.
 
+`localize` requires the `:json` module that ships with OTP 27 and later. On OTP 26, also add `{:json_polyfill, "~> 0.2 or ~> 1.0"}` to your dependencies.
+
 Optional configuration in `mix.exs`:
 ```elixir
   defp deps do

@@ -2,9 +2,9 @@
 
 Work for `ex_url`. Findings from the 2026-09-21 release-readiness review; there are no design documents yet, so no `plans/` directory.
 
-## Blocked
+## Deferred
 
-* [ ] **Replace `ex_phone_number` with `localize_phone_number`** — a one-for-one swap of parse and international formatting in `URL.Tel`. Blocked on the user's decision: `localize_phone_number 1.0.0` needs Elixir 1.19 and a system libphonenumber build, so it means raising the floor from 1.17 or supporting both libraries.
+* [ ] **Replace `ex_phone_number` with `localize_phone_number`** — a one-for-one swap of parse and international formatting in `URL.Tel`. Parked on 2026-09-21 because `localize_phone_number 1.0.0` needs Elixir 1.19 and a system libphonenumber build; revive when it ships precompiled artefacts or the floor moves to 1.19.
 
 ## Done
 
